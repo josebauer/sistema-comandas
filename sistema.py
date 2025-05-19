@@ -22,7 +22,7 @@ def cadastrar_usuario():
 
 def listar_usuarios():
   if not usuarios:
-    print('\nNão há usuários cadastrados.')
+    return '\nNão há usuários cadastrados.'
   else:
     print('\n----- Usuários Cadastrados -------')
     for usuario in usuarios:
