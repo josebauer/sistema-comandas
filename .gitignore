@@ -1,5 +1,10 @@
 /__pycache__
 /exemplo prof
+/build
+/dist
+
 
 cardapio.py
 comanda.py
+test.py
+main.spec

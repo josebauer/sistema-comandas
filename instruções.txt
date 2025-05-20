@@ -1,0 +1,7 @@
+Rode o arquivo main.py
+
+
+Faça o login com as credenciais do usuário admin:
+
+  E-mail: josebauer@email.com
+  Senha: 1234
