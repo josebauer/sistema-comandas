@@ -1,0 +1,2 @@
+class JanelaPedidos():
+  pass

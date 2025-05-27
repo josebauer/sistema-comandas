@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QPushButton, QMessageBox
-from gui.janela_principal import JanelaPrincipal
+from interface.gerenciamento_usuario.janela_principal import JanelaPrincipal
+from interface.pedidos.janela_pedidos import JanelaPedidos
 from data.usuarios import usuarios
 
 class JanelaLogin(QWidget):
@@ -36,10 +37,11 @@ class JanelaLogin(QWidget):
 
     for usuario in usuarios:
       if usuario.email == email and usuario.senha == senha:
+        self.close()
         if usuario.funcao == "Administrador":
-          self.close()
           self.janela_principal = JanelaPrincipal()
           self.janela_principal.show()
           return
-
+        else:
+          self.janela_pedidos = JanelaPedidos()
       QMessageBox.warning(self, "Erro", "Email ou senha incorretos.")

@@ -1,8 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
-from gui.janela_cadastro import JanelaCadastro
-from gui.janela_lista import JanelaListaUsuarios
-from gui.janela_consulta import JanelaConsulta
-from gui.janela_edicao import JanelaEdicao
+from gui.gerenciamento_usuario.janela_cadastro import JanelaCadastro
+from gui.gerenciamento_usuario.janela_lista import JanelaListaUsuarios
+from gui.gerenciamento_usuario.janela_consulta import JanelaConsulta
+from gui.gerenciamento_usuario.janela_edicao import JanelaEdicao
 
 class JanelaPrincipal(QWidget):
   def __init__(self):
