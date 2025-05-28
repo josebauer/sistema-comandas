@@ -2,7 +2,7 @@ from PyQt5.QtWidgets import QWidget, QFormLayout, QLineEdit, QPushButton, QCombo
 from classes.usuario import Usuario
 from data.usuarios import usuarios
 
-class JanelaCadastro(QWidget):
+class JanelaCadastroUsuario(QWidget):
   def __init__(self):
     super().__init__()
     self.setWindowTitle("Cadastro de Usuário")

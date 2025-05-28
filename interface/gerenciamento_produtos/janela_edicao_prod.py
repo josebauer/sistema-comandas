@@ -1,10 +1,12 @@
 from PyQt5.QtWidgets import QWidget, QFormLayout, QLineEdit, QPushButton, QComboBox, QMessageBox
-from data.usuarios import usuarios
+from interface.gerenciamento_produtos.janela_cadastro_prod import JanelaCadastroProduto
 
-class JanelaEdicao(QWidget):
+produtos = []
+
+class JanelaEdicaoProduto(QWidget):
   def __init__(self):
     super().__init__()
-    self.setWindowTitle("Editar Usuário")
+    self.setWindowTitle("Editar dados do Produto")
     self.setGeometry(150, 150, 400, 300)
 
     self.layout = QFormLayout()
@@ -40,22 +42,21 @@ class JanelaEdicao(QWidget):
     self.setLayout(self.layout)
     self.usuario_encontrado = None
 
-  def buscar_usuario(self):
-    cpf_texto = self.input_cpf_busca.text().strip()
+  def buscar_produto(self):
+    id_texto = self.input_id_busca.text().strip()
 
     try:
-      cpf = int(cpf_texto)
+      id_produto = int(id_texto)
     except ValueError:
-      QMessageBox.warning(self, "Erro", "CPF inválido.")
+      QMessageBox.warning(self, "Erro", "id inválido.")
       return
 
-    for usuario in usuarios:
-      if usuario.cpf == cpf:
-        self.usuario_encontrado = usuario
-        self.input_nome.setText(usuario.nome)
-        self.input_email.setText(usuario.email)
-        self.input_senha.setText(usuario.senha)
-        self.input_funcao.setCurrentText(usuario.funcao)
+    for produto in produtos:
+      if produto.id == id_produto:
+        self.produto_encontrado = produto
+        self.input_nome.setText(produto.nome)
+        self.input_valor.setText(produto.valor)
+        self.input_descricao.setText(produto.input_descricao)
         self.botao_salvar.setEnabled(True)
         return
 

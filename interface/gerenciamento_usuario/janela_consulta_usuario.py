@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QMessageBox
 from data.usuarios import usuarios
 
-class JanelaConsulta(QWidget):
+class JanelaConsultaUsuario(QWidget):
   def __init__(self):
     super().__init__()
     self.setWindowTitle("Consultar Usuário por CPF")
@@ -28,18 +28,18 @@ class JanelaConsulta(QWidget):
     cpf_texto = self.input_cpf.text().strip()
 
     try:
-        cpf = int(cpf_texto)
+      cpf = int(cpf_texto)
     except ValueError:
-        QMessageBox.warning(self, "Erro", "CPF inválido.")
-        return
+      QMessageBox.warning(self, "Erro", "CPF inválido.")
+      return
 
     for usuario in usuarios:
-        if usuario.cpf == cpf:
-            self.resultado.setText(
-                f"Nome: {usuario.nome}\n"
-                f"Email: {usuario.email}\n"
-                f"Função: {usuario.funcao}"
-            )
-            return
+      if usuario.cpf == cpf:
+          self.resultado.setText(
+              f"Nome: {usuario.nome}\n"
+              f"Email: {usuario.email}\n"
+              f"Função: {usuario.funcao}"
+          )
+          return
 
     QMessageBox.information(self, "Não encontrado", "Usuário não encontrado.")

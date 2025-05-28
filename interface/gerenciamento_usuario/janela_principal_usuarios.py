@@ -1,13 +1,13 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
-from gui.gerenciamento_usuario.janela_cadastro import JanelaCadastro
-from gui.gerenciamento_usuario.janela_lista import JanelaListaUsuarios
-from gui.gerenciamento_usuario.janela_consulta import JanelaConsulta
-from gui.gerenciamento_usuario.janela_edicao import JanelaEdicao
+from interface.gerenciamento_usuario.janela_cadastro_usuario import JanelaCadastroUsuario
+from interface.gerenciamento_usuario.janela_lista_usuarios import JanelaListaUsuarios
+from interface.gerenciamento_usuario.janela_consulta_usuario import JanelaConsultaUsuario
+from interface.gerenciamento_usuario.janela_edicao_usuario import JanelaEdicaoUsuario
 
-class JanelaPrincipal(QWidget):
+class JanelaPrincipalUsuarios(QWidget):
   def __init__(self):
     super().__init__()
-    self.setWindowTitle("Sistema de Gerenciamento de Usuários")
+    self.setWindowTitle("Gerenciar Usuários")
     self.setGeometry(100, 100, 400, 300)
 
     layout = QVBoxLayout()
@@ -39,17 +39,17 @@ class JanelaPrincipal(QWidget):
     self.setLayout(layout)
 
   def abrir_janela_cadastro(self):
-    self.janela_cadastro = JanelaCadastro()
+    self.janela_cadastro = JanelaCadastroUsuario()
     self.janela_cadastro.show()
 
   def abrir_janela_lista(self):
     self.janela_lista = JanelaListaUsuarios()
     self.janela_lista.show()
-
+    pass
   def abrir_janela_consulta(self):
-    self.janela_consulta = JanelaConsulta()
+    self.janela_consulta = JanelaConsultaUsuario()
     self.janela_consulta.show()
-
+    pass
   def abrir_janela_edicao(self):
-    self.janela_edicao = JanelaEdicao()
+    self.janela_edicao = JanelaEdicaoUsuario()
     self.janela_edicao.show()
