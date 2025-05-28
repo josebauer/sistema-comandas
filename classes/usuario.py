@@ -45,10 +45,6 @@ class Usuario:
   @funcao.setter
   def funcao(self, nova_funcao):
     self._funcao = nova_funcao
-  
-  def ver_dados(self):
-    print('\n----- Dados do usuário -----')
-    print(f'\nNome: {self._nome} \nCPF: {self._cpf} \nE-mail: {self._email} \nFunção: {self._funcao}')
     
       
 

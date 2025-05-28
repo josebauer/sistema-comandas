@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QApplication
-from gui.janela_login import JanelaLogin
+from interface.janela_login import JanelaLogin
 import sys
 
 '''
