@@ -4,7 +4,7 @@ from data.produtos import produtos
 
 categorias = ["Sobremesa", "Torta"]
 
-class JanelaCadastroProduto(QWidget):
+class TelaCadastro(QWidget):
   def __init__(self):
     super().__init__()
     self.setWindowTitle("Cadastro de Usuário")

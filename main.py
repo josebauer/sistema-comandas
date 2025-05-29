@@ -1,18 +1,24 @@
-from PyQt5.QtWidgets import QApplication
-from interface.janela_login import JanelaLogin
-import sys
+import customtkinter as ctk
+from interface.tela_login import TelaLogin
 
-'''
-  Fazer o login com as seguintes credenciais:
-  
-  E-mail: josebauer@email.com
-  Senha: 1234
-  
-'''
+class App(ctk.CTk):
+  def __init__(self):
+    super().__init__()
+    self.title("Sistema de Usuários")
+    self.geometry("700x600")
+    self.resizable(False, False)
+    self.tela_atual = None
+    self.trocar_tela(TelaLogin)
 
-app = QApplication(sys.argv)
+  def trocar_tela(self, TelaClasse, *args):
+    if self.tela_atual:
+      self.tela_atual.destroy()
+    self.tela_atual = TelaClasse(self, self.trocar_tela, *args)
+    self.tela_atual.pack(fill="both", expand=True)
 
-janela_login = JanelaLogin()
-janela_login.show()
+if __name__ == "__main__":
+  ctk.set_appearance_mode("dark")
+  ctk.set_default_color_theme("green")
 
-sys.exit(app.exec_())
+  app = App()
+  app.mainloop()

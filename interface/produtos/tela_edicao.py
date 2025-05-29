@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QFormLayout, QLineEdit, QPushButton, QComboBox, QMessageBox
-from interface.gerenciamento_produtos.janela_cadastro_prod import JanelaCadastroProduto
+from interface.produtos.tela_cadastro import TelaCadastro
 
 produtos = []
 
-class JanelaEdicaoProduto(QWidget):
+class TelaEdicao(QWidget):
   def __init__(self):
     super().__init__()
     self.setWindowTitle("Editar dados do Produto")

@@ -9,7 +9,7 @@ def criar_tabelas():
       id INT AUTO_INCREMENT PRIMARY KEY,
       nome VARCHAR(50) NOT NULL,
       cpf VARCHAR(20) NOT NULL UNIQUE,
-      email VARCHAR(50) NOT NULL,
+      email VARCHAR(50) NOT NULL UNIQUE,
       senha VARCHAR(30) NOT NULL,
       funcao VARCHAR(30) NOT NULL
     );
@@ -54,7 +54,7 @@ def criar_tabelas():
   """)
   
   cursor.execute("""
-    CREATE TABLE IF NOT EXISTS itens_pedido (
+    CREATE TABLE IF NOT EXISTS item_pedido (
       id INT AUTO_INCREMENT PRIMARY KEY,
       nome VARCHAR(50) NOT NULL,
       obs VARCHAR(100) NOT NULL,
@@ -70,7 +70,7 @@ def criar_tabelas():
   conn.commit()
   cursor.close()
   conn.close()
-  print("Tabelas criadas com sucesso.")
+  print("\nTabelas criadas com sucesso.")
 
 if __name__ == "__main__":
   criar_tabelas()

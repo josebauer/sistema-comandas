@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
-from interface.gerenciamento_produtos.janela_cadastro_prod import JanelaCadastroProduto
-from interface.gerenciamento_produtos.janela_lista_prod import JanelaListaProdutos
-from interface.gerenciamento_produtos.janela_edicao_prod import JanelaEdicaoProduto
+from interface.produtos.tela_cadastro import TelaCadastro 
+from interface.produtos.tela_listagem import TelaListagem
+from interface.produtos.tela_edicao import TelaEdicao
 
-class JanelaPrincipalProdutos(QWidget):
+class TelaPrincipalProdutos(QWidget):
   def __init__(self):
     super().__init__()
     self.setWindowTitle("Gerenciar Produtos")
@@ -21,9 +21,9 @@ class JanelaPrincipalProdutos(QWidget):
     botao_editar.setFixedHeight(50)
     botao_sair.setFixedHeight(50)
 
-    botao_cadastrar.clicked.connect(self.abrir_janela_cadastro)
-    botao_listar.clicked.connect(self.abrir_janela_lista)
-    botao_editar.clicked.connect(self.abrir_janela_edicao)
+    botao_cadastrar.clicked.connect(self.mostrar_tela_cadastro)
+    botao_listar.clicked.connect(self.mostrar_tela_lista)
+    botao_editar.clicked.connect(self.mostrar_tela_edicao)
     botao_sair.clicked.connect(self.close)
 
     layout.addWidget(botao_cadastrar)
@@ -33,14 +33,14 @@ class JanelaPrincipalProdutos(QWidget):
 
     self.setLayout(layout)
 
-  def abrir_janela_cadastro(self):
-    self.janela_cadastro = JanelaCadastroProduto()
+  def mostrar_tela_cadastro(self):
+    self.janela_cadastro = TelaCadastro()
     self.janela_cadastro.show()
 
-  def abrir_janela_lista(self):
-    self.janela_lista = JanelaListaProdutos()
+  def mostrar_tela_lista(self):
+    self.janela_lista = TelaListagem()
     self.janela_lista.show()
 
-  def abrir_janela_edicao(self):
-    self.janela_edicao = JanelaEdicaoProduto()
+  def mostrar_tela_edicao(self):
+    self.janela_edicao = TelaEdicao()
     self.janela_edicao.show()

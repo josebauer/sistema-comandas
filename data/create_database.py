@@ -11,7 +11,7 @@ def criar_banco():
 
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS cafeteria")
-    print("Banco de dados criado (ou já existia).")
+    print("\nBanco de dados criado (ou já existia).")
 
     cursor.close()
     conn.close()

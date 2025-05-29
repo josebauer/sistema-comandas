@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QListWidget, QPushButton
 from data.produtos import produtos
 
-class JanelaListaProdutos(QWidget):
+class TelaListagem(QWidget):
   def __init__(self):
     super().__init__()
     self.setWindowTitle("Produtos Cadastrados")
