@@ -4,7 +4,7 @@ def criar_usuario_admin():
   conn = get_connection()
   cursor = conn.cursor()
 
-  email_admin = 'josebauer@email.com'
+  email_admin = 'admin@email.com'
   cpf_admin = '123.456.789-10'
 
   # Verifica se o usuário já existe pelo email ou CPF
@@ -21,7 +21,7 @@ def criar_usuario_admin():
     cursor.execute("""
       INSERT INTO usuario (nome, cpf, email, senha, funcao)
       VALUES (%s, %s, %s, %s, %s)
-    """, ('José H Bauer', cpf_admin, email_admin, 'jose123', 'Administrador'))
+    """, ('Admin', cpf_admin, email_admin, 'admin', 'Administrador'))
 
     conn.commit()
     print("\nUsuário administrador criado com sucesso!")

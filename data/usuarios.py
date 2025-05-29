@@ -2,8 +2,6 @@ from data.db_connection import get_connection
 from classes.usuario import Usuario
 from mysql.connector import IntegrityError
 
-usuarios = []
-
 def login_usuario(email: str, senha: str) -> Usuario | None:
   conn = get_connection()
   cursor = conn.cursor(dictionary=True)
@@ -17,6 +15,7 @@ def login_usuario(email: str, senha: str) -> Usuario | None:
 
     if usuario_data:
       return Usuario(
+        id=usuario_data["id"],
         nome=usuario_data["nome"],
         cpf=usuario_data["cpf"],
         email=usuario_data["email"],
@@ -29,6 +28,39 @@ def login_usuario(email: str, senha: str) -> Usuario | None:
     cursor.close()
     conn.close()
 
+def excluir_usuario(id: int):
+  conn = get_connection()
+  cursor = conn.cursor()
+  try:
+    cursor.execute("DELETE FROM usuario WHERE id = %s", (id,))
+    conn.commit()
+  finally:
+    cursor.close()
+    conn.close()
+
+def listar_usuarios() -> list[Usuario]:
+  conn = get_connection()
+  cursor = conn.cursor(dictionary=True) 
+
+  try:
+    cursor.execute("SELECT * FROM usuario")
+    usuarios_data = cursor.fetchall()
+
+    return [
+      Usuario(
+        id=d["id"],
+        nome=d["nome"],
+        cpf=d["cpf"],
+        email=d["email"],
+        senha=d["senha"],
+        funcao=d["funcao"]
+      ) for d in usuarios_data
+    ]
+
+  finally:
+    cursor.close()
+    conn.close()
+  
 def cadastrar_usuario_bd(usuario: Usuario):
   conn = get_connection()
   cursor = conn.cursor()

@@ -1,10 +1,15 @@
 class Usuario:
-  def __init__(self, nome, cpf, email, senha, funcao):
+  def __init__(self, id, nome, cpf, email, senha, funcao):
+    self._id = id
     self._nome = nome
     self._cpf = cpf
     self._email = email
     self._senha = senha
     self._funcao = funcao # Atendente / Administrador
+    
+  @property
+  def id(self):
+    return self._id
     
   @property
   def nome(self):
