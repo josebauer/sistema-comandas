@@ -12,7 +12,22 @@
   pip install -r requirements.txt
 ```
 
-3. Rode o programa pelo arquivo main ou pelo seguinte código:
+3. Crie o banco de dados com o código a seguir:
+```bash
+  python data/create_database.py
+```
+
+4. Crie as tabelas do banco de dados com o código a seguir:
+```bash
+  python data/create_tables.py
+```
+
+5. Crie o usuário administrador para acessar o sistema, com o código a seguir:
+```bash
+  python data/create_user_admin.py
+```
+
+6. Rode o programa pelo arquivo main ou pelo seguinte código:
 ```bash
   python main.py
 ```
