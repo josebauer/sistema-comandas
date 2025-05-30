@@ -8,16 +8,30 @@ class TelaLogin(ctk.CTkFrame):
     super().__init__(master)
     self.trocar_tela = trocar_tela
 
-    label = ctk.CTkLabel(self, text="Bem vindo! Insira suas credenciais abaixo:", font=('system-ui', 18))
-    label.pack(pady=20)
+    # Frame central para centralização vertical e horizontal
+    frame_conteudo = ctk.CTkFrame(self, fg_color="transparent")
+    frame_conteudo.pack(expand=True)
 
-    self.email_input = ctk.CTkEntry(self, placeholder_text="Email")
-    self.email_input.pack(pady=10, fill="x", padx=200)
+    label = ctk.CTkLabel(frame_conteudo, text="Olá, insira suas credenciais abaixo:", font=ctk.CTkFont(size=18, weight="bold"))
+    label.pack(pady=(0, 20))
 
-    self.senha_input = ctk.CTkEntry(self, placeholder_text="Senha", show="*")
-    self.senha_input.pack(pady=10, fill="x", padx=200)
+    self.email_input = ctk.CTkEntry(frame_conteudo, placeholder_text="E-mail", height=40, width=300)
+    self.email_input.pack(pady=10)
 
-    botao_login = ctk.CTkButton(self, text="Entrar", command=self.fazer_login, fg_color="#238636", hover_color="#267C37")
+    self.senha_input = ctk.CTkEntry(frame_conteudo, placeholder_text="Senha", show="*", height=40, width=300)
+    self.senha_input.pack(pady=10)
+
+    botao_login = ctk.CTkButton(
+      frame_conteudo,
+      text="Entrar", 
+      command=self.fazer_login,       
+      height=32,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold"),
+    )
     botao_login.pack(pady=20)
 
   def fazer_login(self):

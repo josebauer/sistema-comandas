@@ -10,15 +10,48 @@ class TelaPrincipalUsuarios(ctk.CTkFrame):
     self.trocar_tela_callback = trocar_tela_callback
     self.usuario = usuario
 
-    frame = ctk.CTkFrame(self)
-    frame.pack(padx=20, pady=20, fill="both", expand=True)
+    frame = ctk.CTkFrame(self, fg_color="transparent")
+    frame.pack(expand=True)
 
-    titulo = ctk.CTkLabel(frame, text="Gerenciar Usuários", font=ctk.CTkFont(size=16, weight="bold"))
+    titulo = ctk.CTkLabel(frame, text="Gerenciar Usuários", font=ctk.CTkFont(size=18, weight="bold"))
     titulo.pack(pady=(0, 20))
 
-    botao_cadastrar = ctk.CTkButton(frame, text="Cadastrar novo usuário", command=self.mostrar_tela_cadastro, height=50)
-    botao_listar = ctk.CTkButton(frame, text="Gerenciar usuários", command=self.mostrar_tela_listar, height=50)
-    botao_voltar = ctk.CTkButton(frame, text="Voltar", command=self.voltar, height=50)
+    botao_cadastrar = ctk.CTkButton(
+      frame, 
+      text="Cadastrar novo usuário",
+      command=self.mostrar_tela_cadastro, 
+      height=45, 
+      width=400,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
+    botao_listar = ctk.CTkButton(
+      frame, 
+      text="Usuários cadastrados", 
+      command=self.mostrar_tela_listar, 
+      height=45, 
+      width=400,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
+    botao_voltar = ctk.CTkButton(
+      frame, 
+      text="Voltar", 
+      command=self.voltar, 
+      height=45, 
+      width=400,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#63a9ff",
+      hover_color="#63a9ff",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
 
     botao_cadastrar.pack(pady=10, fill="x")
     botao_listar.pack(pady=10, fill="x")

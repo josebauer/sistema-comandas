@@ -9,15 +9,28 @@ class TelaListagem(ctk.CTkFrame):
     super().__init__(master)
     self.trocar_tela_callback = trocar_tela_callback
     self.usuario_logado = usuario_logado
-
-    ctk.CTkLabel(self, text="Usuários Cadastrados", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=20)
+    
+    ctk.CTkLabel(self, text="Usuários Cadastrados", font=ctk.CTkFont(size=18, weight="bold")).pack(pady=(40, 0))
 
     self.container = ctk.CTkScrollableFrame(self, width=550, height=350)
-    self.container.pack(padx=20, pady=10, fill="both", expand=True)
+    self.container.pack(expand=True)
 
     self.carregar_usuarios()
 
-    ctk.CTkButton(self, text="Voltar", command=self.voltar).pack(pady=10)
+    self.botao_voltar = ctk.CTkButton(
+        self,
+        text="Voltar",
+        fg_color="transparent",
+        border_width=2,
+        border_color="#63a9ff",
+        hover_color="#63a9ff",
+        font=ctk.CTkFont(size=14, weight="bold"),
+        command=self.voltar,
+        height=40,
+        width=250
+      )
+    self.botao_voltar.pack(pady=(0, 40), side="left", expand=True)
+
 
   def carregar_usuarios(self):
     for widget in self.container.winfo_children():

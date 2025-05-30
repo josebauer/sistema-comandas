@@ -9,36 +9,60 @@ class TelaCadastro(ctk.CTkFrame):
     self.usuario_logado = usuario
     self.trocar_tela_callback = trocar_tela_callback
 
-    self.frame = ctk.CTkFrame(self)
-    self.frame.pack(padx=20, pady=20, fill="both", expand=True)
+    self.frame = ctk.CTkFrame(self, fg_color="transparent")
+    self.frame.pack(expand=True)
 
     titulo = ctk.CTkLabel(self.frame, text="Cadastro de Usuário", font=ctk.CTkFont(size=18, weight="bold"))
-    titulo.pack(pady=(0, 10))
+    titulo.pack(pady=(0, 20))
 
-    self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome completo", height=40)
-    self.input_nome.pack(pady=5, fill="x")
+    self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome completo", height=40, width=400)
+    self.input_nome.pack(pady=5, padx=10)
 
-    self.input_cpf = ctk.CTkEntry(self.frame, placeholder_text="CPF", height=40)
-    self.input_cpf.pack(pady=5, fill="x")
+    self.input_cpf = ctk.CTkEntry(self.frame, placeholder_text="CPF (Apenas números)", height=40, width=400)
+    self.input_cpf.pack(pady=5, padx=10)
+    self.input_cpf.bind("<KeyRelease>", self.formatar_cpf)
 
-    self.input_email = ctk.CTkEntry(self.frame, placeholder_text="Email", height=40)
-    self.input_email.pack(pady=5, fill="x")
+    self.input_email = ctk.CTkEntry(self.frame, placeholder_text="Email", height=40, width=400)
+    self.input_email.pack(pady=5, padx=10)
 
-    self.input_senha = ctk.CTkEntry(self.frame, placeholder_text="Senha", show="*", height=40)
-    self.input_senha.pack(pady=5, fill="x")
+    self.input_senha = ctk.CTkEntry(self.frame, placeholder_text="Senha", show="*", height=40, width=400)
+    self.input_senha.pack(pady=5, padx=10)
     
-    self.input_repetir_senha = ctk.CTkEntry(self.frame, placeholder_text="Repetir Senha", show="*", height=40)
-    self.input_repetir_senha.pack(pady=5, fill="x")
+    self.input_repetir_senha = ctk.CTkEntry(self.frame, placeholder_text="Repetir Senha", show="*", height=40, width=400)
+    self.input_repetir_senha.pack(pady=5, padx=10)
 
-    self.combo_funcao = ctk.CTkOptionMenu(self.frame, values=["Atendente", "Administrador"])
+    self.combo_funcao = ctk.CTkOptionMenu(self.frame, values=["Atendente", "Administrador"], height=40, width=400)
     self.combo_funcao.set("Atendente")
-    self.combo_funcao.pack(pady=5, fill="x")
+    self.combo_funcao.pack(pady=5, padx=10)
 
-    self.botao_cadastrar = ctk.CTkButton(self.frame, text="Cadastrar", command=self.cadastrar_usuario, height=40)
-    self.botao_cadastrar.pack(pady=(15, 5), fill="x")
+    botoes_frame = ctk.CTkFrame(self.frame)
+    botoes_frame.pack(pady=(15, 0), padx=10, fill="x")
 
-    self.botao_voltar = ctk.CTkButton(self.frame, text="Voltar", command=self.voltar, height=40)
-    self.botao_voltar.pack(fill="x")
+    self.botao_cadastrar = ctk.CTkButton(
+      botoes_frame,
+      text="Cadastrar",
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold"),
+      command=self.cadastrar_usuario,
+      height=40
+    )
+    self.botao_cadastrar.pack(side="left", expand=True, fill="x", padx=(0, 5))
+
+    self.botao_voltar = ctk.CTkButton(
+      botoes_frame,
+      text="Voltar",
+      fg_color="transparent",
+      border_width=2,
+      border_color="#63a9ff",
+      hover_color="#63a9ff",
+      font=ctk.CTkFont(size=14, weight="bold"),
+      command=self.voltar,
+      height=40
+    )
+    self.botao_voltar.pack(side="left", expand=True, fill="x", padx=(5, 0))
 
   def cadastrar_usuario(self):
     nome = self.input_nome.get().strip()
@@ -68,3 +92,20 @@ class TelaCadastro(ctk.CTkFrame):
   def voltar(self):
     from interface.usuarios.tela_principal import TelaPrincipalUsuarios
     self.trocar_tela_callback(TelaPrincipalUsuarios, self.usuario_logado)
+
+  def formatar_cpf(self, event=None):
+    texto = self.input_cpf.get()
+    numeros = ''.join(filter(str.isdigit, texto))
+
+    formatado = ""
+    if len(numeros) > 0:
+        formatado += numeros[:3]
+    if len(numeros) >= 4:
+        formatado += "." + numeros[3:6]
+    if len(numeros) >= 7:
+        formatado += "." + numeros[6:9]
+    if len(numeros) >= 10:
+        formatado += "-" + numeros[9:11]
+
+    self.input_cpf.delete(0, "end")
+    self.input_cpf.insert(0, formatado)
