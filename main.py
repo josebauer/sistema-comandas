@@ -4,8 +4,8 @@ from interface.tela_login import TelaLogin
 class App(ctk.CTk):
   def __init__(self):
     super().__init__()
-    self.title("Sistema de Usuários")
-    self.geometry("700x600")
+    self.title("Sistema de Comandas")
+    self.geometry("800x600")
     self.resizable(False, False)
     self.tela_atual = None
     self.trocar_tela(TelaLogin)

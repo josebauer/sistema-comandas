@@ -12,12 +12,12 @@ class TelaLogin(ctk.CTkFrame):
     label.pack(pady=20)
 
     self.email_input = ctk.CTkEntry(self, placeholder_text="Email")
-    self.email_input.pack(pady=10, fill="x", padx=100)
+    self.email_input.pack(pady=10, fill="x", padx=200)
 
     self.senha_input = ctk.CTkEntry(self, placeholder_text="Senha", show="*")
-    self.senha_input.pack(pady=10, fill="x", padx=100)
+    self.senha_input.pack(pady=10, fill="x", padx=200)
 
-    botao_login = ctk.CTkButton(self, text="Entrar", command=self.fazer_login)
+    botao_login = ctk.CTkButton(self, text="Entrar", command=self.fazer_login, fg_color="#238636", hover_color="#267C37")
     botao_login.pack(pady=20)
 
   def fazer_login(self):

@@ -1,39 +1,54 @@
 import customtkinter as ctk
-from data.usuarios import usuarios
+from data.usuarios import listar_usuarios
+from interface.widgets.item_usuario import ItemUsuario
+from interface.usuarios.tela_consulta import TelaConsulta
+from interface.usuarios.tela_edicao import TelaEdicao
 
 class TelaListagem(ctk.CTkFrame):
-  def __init__(self, master, trocar_tela_callback, usuario):
+  def __init__(self, master, trocar_tela_callback, usuario_logado):
     super().__init__(master)
-    self.usuario = usuario
     self.trocar_tela_callback = trocar_tela_callback
+    self.usuario_logado = usuario_logado
 
-    self.frame = ctk.CTkFrame(self)
-    self.frame.pack(padx=20, pady=20, fill="both", expand=True)
+    ctk.CTkLabel(self, text="Usuários Cadastrados", font=ctk.CTkFont(size=20, weight="bold")).pack(pady=20)
 
-    self.titulo = ctk.CTkLabel(self.frame, text="Usuários Cadastrados", font=ctk.CTkFont(size=18, weight="bold"))
-    self.titulo.pack(pady=(0, 10))
-
-    self.lista = ctk.CTkTextbox(self.frame, height=200)
-    self.lista.pack(fill="both", expand=True)
-    self.lista.configure(state="disabled")
-
-    self.btn_voltar = ctk.CTkButton(self.frame, text="Voltar", command=self.voltar, height=40)
-    self.btn_voltar.pack(pady=(20, 0))
+    self.container = ctk.CTkScrollableFrame(self, width=550, height=350)
+    self.container.pack(padx=20, pady=10, fill="both", expand=True)
 
     self.carregar_usuarios()
 
+    ctk.CTkButton(self, text="Voltar", command=self.voltar).pack(pady=10)
+
   def carregar_usuarios(self):
-    self.lista.configure(state="normal")
-    self.lista.delete("1.0", "end")
+    for widget in self.container.winfo_children():
+      widget.destroy()
+
+    usuarios = listar_usuarios()
 
     if not usuarios:
-      self.lista.insert("end", "Nenhum usuário cadastrado.\n")
+      ctk.CTkLabel(self.container, text="Nenhum usuário encontrado.").pack(pady=10)
     else:
       for usuario in usuarios:
-        self.lista.insert("end", f"{usuario.nome} - {usuario.funcao}\n")
+        item = ItemUsuario(
+          master=self.container,
+          usuario=usuario,
+          ver_callback=self.ver_usuario,
+          editar_callback=self.editar_usuario,
+          excluir_callback=self.excluir_usuario,
+        )
+        item.pack(fill="x", padx=10, pady=5)
 
-    self.lista.configure(state="disabled")
+  def ver_usuario(self, usuario):
+    self.trocar_tela_callback(TelaConsulta, self.usuario_logado, usuario.id)
+    
+  def editar_usuario(self, usuario):
+    self.trocar_tela_callback(TelaEdicao, usuario)
 
+  def excluir_usuario(self, usuario):
+    from data.usuarios import excluir_usuario_db
+    excluir_usuario_db(usuario.id)
+    self.carregar_usuarios() 
+  
   def voltar(self):
     from interface.usuarios.tela_principal import TelaPrincipalUsuarios
-    self.trocar_tela_callback(TelaPrincipalUsuarios, self.usuario)
+    self.trocar_tela_callback(TelaPrincipalUsuarios, self.usuario_logado)

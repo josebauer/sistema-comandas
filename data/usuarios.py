@@ -28,7 +28,7 @@ def login_usuario(email: str, senha: str) -> Usuario | None:
     cursor.close()
     conn.close()
 
-def excluir_usuario(id: int):
+def excluir_usuario_db(id: int):
   conn = get_connection()
   cursor = conn.cursor()
   try:
@@ -60,7 +60,44 @@ def listar_usuarios() -> list[Usuario]:
   finally:
     cursor.close()
     conn.close()
-  
+
+def consultar_usuario_db(id: int) -> Usuario | None:
+  conn = get_connection()
+  cursor = conn.cursor(dictionary=True)
+
+  try:
+    cursor.execute("SELECT * FROM usuario WHERE id = %s", (id,))
+    dados = cursor.fetchone()
+    if dados:
+      return Usuario(
+        id=dados["id"],
+        nome=dados["nome"],
+        cpf=dados["cpf"],
+        email=dados["email"],
+        senha=dados["senha"],
+        funcao=dados["funcao"]
+      )
+    return None
+  finally:
+    cursor.close()
+    conn.close()
+
+def atualizar_usuario_db(usuario: Usuario):
+  conn = get_connection()
+  cursor = conn.cursor()
+
+  try:
+    cursor.execute("""
+      UPDATE usuario
+      SET nome = %s, email = %s, senha = %s, funcao = %s
+      WHERE id = %s
+    """, (usuario.nome, usuario.email, usuario.senha, usuario.funcao, usuario.id))
+
+    conn.commit()
+  finally:
+    cursor.close()
+    conn.close()
+
 def cadastrar_usuario_bd(usuario: Usuario):
   conn = get_connection()
   cursor = conn.cursor()

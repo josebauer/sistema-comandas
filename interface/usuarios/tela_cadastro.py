@@ -18,7 +18,7 @@ class TelaCadastro(ctk.CTkFrame):
     self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome completo", height=40)
     self.input_nome.pack(pady=5, fill="x")
 
-    self.input_cpf = ctk.CTkEntry(self.frame, placeholder_text="CPF (somente números)", height=40)
+    self.input_cpf = ctk.CTkEntry(self.frame, placeholder_text="CPF", height=40)
     self.input_cpf.pack(pady=5, fill="x")
 
     self.input_email = ctk.CTkEntry(self.frame, placeholder_text="Email", height=40)
@@ -48,10 +48,10 @@ class TelaCadastro(ctk.CTkFrame):
     repetir_senha = self.input_repetir_senha.get().strip()
     funcao = self.combo_funcao.get()
 
-    if not nome or not cpf or not email or not senha:
+    if not nome or not cpf or not email or not senha or not repetir_senha:
       messagebox.showwarning("Erro", "Preencha todos os campos.")
       return
-
+    
     if senha != repetir_senha:
       messagebox.showwarning("Erro", "As senhas não conferem")
       return
