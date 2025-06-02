@@ -15,8 +15,18 @@ class TelaEdicao(ctk.CTkFrame):
     titulo = ctk.CTkLabel(self.frame, text="Editar dados do usuário", font=ctk.CTkFont(size=18, weight="bold"))
     titulo.pack(pady=(0, 20))
     
+    # --- Validação nome
+    validar_cmd = self.register(self.validar_nome)
+    
     # --- Nome
-    self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome", height=40, width=400)
+    self.input_nome = ctk.CTkEntry(
+      self.frame,
+      placeholder_text="Nome completo",
+      height=40,
+      width=400,
+      validate="key",
+      validatecommand=(validar_cmd, "%P")
+    )
     self.input_nome.pack(pady=5, fill="x")
     
     # --- Email
@@ -65,6 +75,9 @@ class TelaEdicao(ctk.CTkFrame):
     self.botao_voltar.pack(side="left", expand=True, fill="x", padx=(5, 0))
 
     self.preencher_campos()
+  
+  def validar_nome(self, texto):
+    return all(c.isalpha() or c.isspace() for c in texto)
 
   def preencher_campos(self):
     self.input_nome.insert(0, self.usuario_encontrado.nome)

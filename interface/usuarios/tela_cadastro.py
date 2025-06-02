@@ -15,7 +15,15 @@ class TelaCadastro(ctk.CTkFrame):
     titulo = ctk.CTkLabel(self.frame, text="Cadastro de Usuário", font=ctk.CTkFont(size=18, weight="bold"))
     titulo.pack(pady=(0, 20))
 
-    self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome completo", height=40, width=400)
+    validar_cmd = self.register(self.validar_nome)
+    self.input_nome = ctk.CTkEntry(
+      self.frame,
+      placeholder_text="Nome completo",
+      height=40,
+      width=400,
+      validate="key",
+      validatecommand=(validar_cmd, "%P")
+    )
     self.input_nome.pack(pady=5, padx=10)
 
     self.input_cpf = ctk.CTkEntry(self.frame, placeholder_text="CPF (Apenas números)", height=40, width=400)
@@ -93,6 +101,9 @@ class TelaCadastro(ctk.CTkFrame):
     from interface.usuarios.tela_principal import TelaPrincipalUsuarios
     self.trocar_tela_callback(TelaPrincipalUsuarios, self.usuario_logado)
 
+  def validar_nome(self, texto):
+    return all(c.isalpha() or c.isspace() for c in texto)
+  
   def formatar_cpf(self, event=None):
     texto = self.input_cpf.get()
     numeros = ''.join(filter(str.isdigit, texto))
