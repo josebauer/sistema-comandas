@@ -29,7 +29,7 @@ class TelaGerenciamento(ctk.CTkFrame):
     )
     botao_geren_produtos = ctk.CTkButton(
       layout, 
-      text="Gerenciar produtos", 
+      text="Gerenciar cardápio", 
       command=self.abrir_tela_produtos, 
       height=45, 
       width=400, 
