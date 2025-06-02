@@ -31,7 +31,7 @@ class TelaEdicao(ctk.CTkFrame):
     self.input_repetir_senha.pack(pady=5, fill="x")
 
     # --- Função
-    self.combo_funcao = ctk.CTkOptionMenu(self.frame, values=["Atendente", "Administrador"], height=40, width=400)
+    self.combo_funcao = ctk.CTkOptionMenu(self.frame, values=["Atendente", "Administrador"], fg_color="#366bac", button_color="#204066", button_hover_color="#366bac", height=40, width=400)
     self.combo_funcao.pack(pady=5, fill="x")
 
     # --- Botões

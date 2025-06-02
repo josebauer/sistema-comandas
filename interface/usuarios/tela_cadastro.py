@@ -31,7 +31,7 @@ class TelaCadastro(ctk.CTkFrame):
     self.input_repetir_senha = ctk.CTkEntry(self.frame, placeholder_text="Repetir Senha", show="*", height=40, width=400)
     self.input_repetir_senha.pack(pady=5, padx=10)
 
-    self.combo_funcao = ctk.CTkOptionMenu(self.frame, values=["Atendente", "Administrador"], height=40, width=400)
+    self.combo_funcao = ctk.CTkOptionMenu(self.frame, values=["Atendente", "Administrador"], fg_color="#366bac", button_color="#204066", button_hover_color="#366bac", height=40, width=400)
     self.combo_funcao.set("Atendente")
     self.combo_funcao.pack(pady=5, padx=10)
 

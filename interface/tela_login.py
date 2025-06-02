@@ -9,11 +9,11 @@ class TelaLogin(ctk.CTkFrame):
     self.trocar_tela = trocar_tela
 
     # Frame central para centralização vertical e horizontal
-    frame_conteudo = ctk.CTkFrame(self, fg_color="transparent")
+    frame_conteudo = ctk.CTkFrame(self, fg_color="#1e1e1e", corner_radius=12, width=500)
     frame_conteudo.pack(expand=True)
 
     label = ctk.CTkLabel(frame_conteudo, text="Olá, insira suas credenciais abaixo:", font=ctk.CTkFont(size=18, weight="bold"))
-    label.pack(pady=(0, 20))
+    label.pack(pady=30, padx=40)
 
     self.email_input = ctk.CTkEntry(frame_conteudo, placeholder_text="E-mail", height=40, width=300)
     self.email_input.pack(pady=10)
@@ -32,7 +32,7 @@ class TelaLogin(ctk.CTkFrame):
       hover_color="#238636",
       font=ctk.CTkFont(size=14, weight="bold"),
     )
-    botao_login.pack(pady=20)
+    botao_login.pack(pady=30)
 
   def fazer_login(self):
     email = self.email_input.get().strip()
