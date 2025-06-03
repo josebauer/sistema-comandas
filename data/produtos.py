@@ -1,13 +1,22 @@
+from data.db_connection import get_connection
 from classes.produto import Produto
 
-produtos = []
+def cadastrar_produto_bd(produto: Produto):
+  conn = get_connection()
+  cursor = conn.cursor()
 
-produto_teste = Produto(
-  nome='Petit Gateau',
-  valor=15.50,
-  categoria='Sobremesas',
-  descricao='teste produto',
-  disponibilidade=True
-)
+  try:
+    cursor.execute("""
+      INSERT INTO produto (nome, valor, id_categoria, descricao, disponibilidade)
+      VALUES (%s, %s, %s, %s, %s)
+    """, (produto.nome, str(produto.valor), produto.categoria, produto.descricao, produto.disponibilidade))
 
-produtos.append(produto_teste)
+    conn.commit()
+
+  except Exception as e:
+    print(f"Erro ao cadastrar produto: {e}")
+    raise
+  
+  finally:
+    cursor.close()
+    conn.close()
