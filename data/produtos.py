@@ -80,7 +80,7 @@ def cadastrar_produto_bd(produto: Produto):
     cursor.execute("""
       INSERT INTO produto (nome, valor, id_categoria, descricao, disponibilidade)
       VALUES (%s, %s, %s, %s, %s)
-    """, (produto.nome, str(produto.valor), produto.categoria, produto.descricao, produto.disponibilidade))
+    """, (produto.nome, produto.valor, produto.id_categoria, produto.descricao, produto.disponibilidade))
 
     conn.commit()
 

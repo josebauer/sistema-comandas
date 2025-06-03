@@ -28,7 +28,7 @@ def criar_tabelas():
       nome VARCHAR(50) NOT NULL,
       valor float NOT NULL,
       descricao VARCHAR(100) NOT NULL,
-      disponibilidade BOOLEAN,
+      disponibilidade VARCHAR(20) NOT NULL,
       id_categoria INT NOT NULL,
       FOREIGN KEY (id_categoria) REFERENCES categoria(id)
     );

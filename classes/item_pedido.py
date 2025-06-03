@@ -1,4 +1,4 @@
-class item_pedido:
+class ItemPedido:
     def __init__(self, nome, observacoes, valor_unit, quantidade, id=None):
         self._id = id
         self._nome = nome
