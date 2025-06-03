@@ -1,2 +1,112 @@
-class TelaEdicaoProduto():
-  pass
+import customtkinter as ctk
+from tkinter import messagebox
+from data.produtos import atualizar_produto_db
+
+class TelaEdicaoProduto(ctk.CTkFrame):
+    def __init__(self, master, trocar_tela_callback, usuario_logado, produto_encontrado):
+        super().__init__(master)
+        self.usuario_logado = usuario_logado
+        self.produto_encontrado = produto_encontrado
+        self.trocar_tela_callback = trocar_tela_callback
+
+        self.frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.frame.pack(expand=True)
+
+        titulo = ctk.CTkLabel(self.frame, text="Editar dados do produto", font=ctk.CTkFont(size=18, weight="bold"))
+        titulo.pack(pady=(0, 20))
+
+        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", height=40, width=400)
+        self.input_nome.pack(pady=5, fill="x")
+
+        self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
+        self.input_valor.pack(pady=5, fill="x")
+
+        self.input_categoria = ctk.CTkEntry(self.frame, placeholder_text="ID da Categoria", height=40, width=400)
+        self.input_categoria.pack(pady=5, fill="x")
+
+        self.input_descricao = ctk.CTkEntry(self.frame, placeholder_text="Descrição", height=40, width=400)
+        self.input_descricao.pack(pady=5, fill="x")
+
+        self.combo_disponibilidade = ctk.CTkOptionMenu(
+            self.frame,
+            values=["Disponível", "Indisponível"],
+            fg_color="#366bac",
+            button_color="#204066",
+            button_hover_color="#366bac",
+            height=40,
+            width=400
+        )
+        self.combo_disponibilidade.pack(pady=5, fill="x")
+
+        botoes_frame = ctk.CTkFrame(self.frame)
+        botoes_frame.pack(pady=(15, 0), padx=10, fill="x")
+
+        self.botao_salvar = ctk.CTkButton(
+            botoes_frame,
+            text="Salvar alterações",
+            fg_color="transparent",
+            border_width=2,
+            border_color="#238636",
+            hover_color="#238636",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            command=self.salvar_edicao,
+            height=40
+        )
+        self.botao_salvar.pack(side="left", expand=True, fill="x", padx=(0, 5))
+
+        self.botao_voltar = ctk.CTkButton(
+            botoes_frame,
+            text="Voltar",
+            fg_color="transparent",
+            border_width=2,
+            border_color="#63a9ff",
+            hover_color="#63a9ff",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            command=self.voltar,
+            height=40
+        )
+        self.botao_voltar.pack(side="left", expand=True, fill="x", padx=(5, 0))
+
+        self.preencher_campos()
+
+    def preencher_campos(self):
+        self.input_nome.insert(0, self.produto_encontrado.nome)
+        self.input_valor.insert(0, str(self.produto_encontrado.valor))
+        self.input_categoria.insert(0, str(self.produto_encontrado.id_categoria))
+        self.input_descricao.insert(0, self.produto_encontrado.descricao or "")
+        self.combo_disponibilidade.set(self.produto_encontrado.disponibilidade)
+
+    def salvar_edicao(self):
+        nome = self.input_nome.get().strip()
+        valor = self.input_valor.get().strip()
+        id_categoria = self.input_categoria.get().strip()
+        descricao = self.input_descricao.get().strip()
+        disponibilidade = self.combo_disponibilidade.get()
+
+        if not nome or not valor or not id_categoria:
+            messagebox.showwarning("Erro", "Preencha todos os campos obrigatórios.")
+            return
+
+        try:
+            valor = float(valor.replace(',', '.'))
+            id_categoria = int(id_categoria)
+        except ValueError:
+            messagebox.showwarning("Erro", "Valor deve ser numérico e categoria deve ser um número inteiro.")
+            return
+
+        self.produto_encontrado.nome = nome
+        self.produto_encontrado.valor = valor
+        self.produto_encontrado.id_categoria = id_categoria
+        self.produto_encontrado.descricao = descricao
+        self.produto_encontrado.disponibilidade = disponibilidade
+
+        try:
+            atualizar_produto_db(self.produto_encontrado)
+            messagebox.showinfo("Sucesso", "Produto atualizado com sucesso.")
+            self.voltar()
+        except Exception as e:
+            messagebox.showerror("Erro", f"Erro ao atualizar produto: {e}")
+
+    def voltar(self):
+        from interface.produtos.tela_principal import TelaPrincipalProdutos
+        self.trocar_tela_callback(TelaPrincipalProdutos, self.usuario_logado)
