@@ -1,46 +1,68 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton
-from interface.produtos.tela_cadastro import TelaCadastro 
-from interface.produtos.tela_listagem import TelaListagem
-from interface.produtos.tela_edicao import TelaEdicao
+import customtkinter as ctk
+from interface.produtos.tela_cadastro import TelaCadastroProduto
+from interface.produtos.tela_listagem import TelaListagemProduto
 
-class TelaPrincipalProdutos(QWidget):
-  def __init__(self):
-    super().__init__()
-    self.setWindowTitle("Gerenciar Produtos")
-    self.setGeometry(100, 100, 400, 300)
+class TelaPrincipalProdutos(ctk.CTkFrame):
+  def __init__(self, master, trocar_tela_callback, usuario):
+    super().__init__(master)
+    self.trocar_tela_callback = trocar_tela_callback
+    self.usuario = usuario
 
-    layout = QVBoxLayout()
+    frame = ctk.CTkFrame(self, fg_color="transparent")
+    frame.pack(expand=True)
 
-    botao_cadastrar = QPushButton("Cadastrar novo produto")
-    botao_listar = QPushButton("Ver produtos cadastrados")
-    botao_editar = QPushButton("Editar produto")
-    botao_sair = QPushButton("Sair")
-    
-    botao_cadastrar.setFixedHeight(50)
-    botao_listar.setFixedHeight(50)
-    botao_editar.setFixedHeight(50)
-    botao_sair.setFixedHeight(50)
+    titulo = ctk.CTkLabel(frame, text="Gerenciar Produtos", font=ctk.CTkFont(size=18, weight="bold"))
+    titulo.pack(pady=(0, 20))
 
-    botao_cadastrar.clicked.connect(self.mostrar_tela_cadastro)
-    botao_listar.clicked.connect(self.mostrar_tela_lista)
-    botao_editar.clicked.connect(self.mostrar_tela_edicao)
-    botao_sair.clicked.connect(self.close)
+    botao_cadastrar = ctk.CTkButton(
+      frame,
+      text="Cadastrar novo produto",
+      command=self.mostrar_tela_cadastro,
+      height=45,
+      width=400,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
 
-    layout.addWidget(botao_cadastrar)
-    layout.addWidget(botao_listar)
-    layout.addWidget(botao_editar)
-    layout.addWidget(botao_sair)
+    botao_listar = ctk.CTkButton(
+      frame,
+      text="Produtos cadastrados",
+      command=self.mostrar_tela_listar,
+      height=45,
+      width=400,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
 
-    self.setLayout(layout)
+    botao_voltar = ctk.CTkButton(
+      frame,
+      text="Voltar",
+      command=self.voltar,
+      height=45,
+      width=400,
+      fg_color="transparent",
+      border_width=2,
+      border_color="#63a9ff",
+      hover_color="#63a9ff",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
+
+    botao_cadastrar.pack(pady=10, fill="x")
+    botao_listar.pack(pady=10, fill="x")
+    botao_voltar.pack(pady=10, fill="x")
 
   def mostrar_tela_cadastro(self):
-    self.janela_cadastro = TelaCadastro()
-    self.janela_cadastro.show()
+    self.trocar_tela_callback(TelaCadastroProduto, self.usuario)
 
-  def mostrar_tela_lista(self):
-    self.janela_lista = TelaListagem()
-    self.janela_lista.show()
+  def mostrar_tela_listar(self):
+    self.trocar_tela_callback(TelaListagemProduto, self.usuario)
 
-  def mostrar_tela_edicao(self):
-    self.janela_edicao = TelaEdicao()
-    self.janela_edicao.show()
+  def voltar(self):
+    from interface.tela_gerenciamento import TelaGerenciamento
+    self.trocar_tela_callback(TelaGerenciamento, self.usuario)
