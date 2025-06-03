@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from classes.produto import Produto
 from data.produtos import cadastrar_produto_bd
+from data.categorias import listar_categorias
 
 class TelaCadastroProduto(ctk.CTkFrame):
     def __init__(self, master, trocar_tela_callback, usuario=None):
@@ -20,9 +21,22 @@ class TelaCadastroProduto(ctk.CTkFrame):
 
         self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
         self.input_valor.pack(pady=5, padx=10)
-
-        self.input_categoria = ctk.CTkEntry(self.frame, placeholder_text="ID da Categoria", height=40, width=400)
-        self.input_categoria.pack(pady=5, padx=10)
+        
+        self.categorias = listar_categorias()
+        self.categorias_dict = {cat.nome: cat.id for cat in self.categorias}
+        
+        self.combo_categoria = ctk.CTkOptionMenu(
+            self.frame,
+            values=list(self.categorias_dict.keys()),
+            fg_color="#366bac",
+            button_color="#204066",
+            button_hover_color="#366bac",
+            height=40,
+            width=400
+        )
+        if self.categorias:
+            self.combo_categoria.set("Selecione uma categoria")
+        self.combo_categoria.pack(pady=5, padx=10)
 
         self.input_descricao = ctk.CTkEntry(self.frame, placeholder_text="Descrição", height=40, width=400)
         self.input_descricao.pack(pady=5, padx=10)
@@ -71,23 +85,23 @@ class TelaCadastroProduto(ctk.CTkFrame):
     def cadastrar_produto(self):
         nome = self.input_nome.get().strip()
         valor = self.input_valor.get().strip()
-        id_categoria = self.input_categoria.get().strip()
+        categoria_nome = self.combo_categoria.get()
         descricao = self.input_descricao.get().strip()
         disponibilidade = self.combo_disponibilidade.get()
 
-        if not nome or not valor or not id_categoria:
+        if not nome or not valor or not categoria_nome:
             messagebox.showwarning("Erro", "Preencha todos os campos obrigatórios.")
             return
 
         try:
             valor = float(valor.replace(',', '.'))
-            id_categoria = int(id_categoria)
+            id_categoria = self.categorias_dict.get(categoria_nome)
         except ValueError:
-            messagebox.showwarning("Erro", "Valor deve ser numérico e Categoria deve ser um número inteiro.")
+            messagebox.showwarning("Erro", "Valor deve ser numérico.")
             return
 
         produto = Produto(
-            id=None,  # ID será gerado pelo banco
+            id=None,
             nome=nome,
             valor=valor,
             id_categoria=id_categoria,
@@ -102,6 +116,7 @@ class TelaCadastroProduto(ctk.CTkFrame):
         except Exception as e:
             messagebox.showerror("Erro", f"Erro ao cadastrar produto: {e}")
 
+
     def voltar(self):
         from interface.produtos.tela_principal import TelaPrincipalProdutos
         self.trocar_tela_callback(TelaPrincipalProdutos, self.usuario_logado)
@@ -109,6 +124,7 @@ class TelaCadastroProduto(ctk.CTkFrame):
     def limpar_campos(self):
         self.input_nome.delete(0, "end")
         self.input_valor.delete(0, "end")
-        self.input_categoria.delete(0, "end")
         self.input_descricao.delete(0, "end")
         self.combo_disponibilidade.set("Disponível")
+        if self.categorias:
+            self.combo_categoria.set("Selecione uma categoria")
