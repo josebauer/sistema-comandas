@@ -8,11 +8,11 @@ Desenvolvido para o Projeto Integrador, do curso Jovem Programador do SENAC-SC. 
 1. Primeiramente, clone o repositório:
   - HTTPS:
 ```bash
-  https://github.com/josebauer/sistema-comandas.git
+  git clone https://github.com/josebauer/sistema-comandas.git
 ```
   - SSH:
 ```bash
-  git@github.com:josebauer/sistema-comandas.git
+  git clone git@github.com:josebauer/sistema-comandas.git
 ```
 
 2. Entre na pasta do projeto:
