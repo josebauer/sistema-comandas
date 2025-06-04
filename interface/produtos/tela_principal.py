@@ -1,6 +1,6 @@
 import customtkinter as ctk
-from interface.categoria.tela_cadastro import TelaCadastroCategoria
-from interface.categoria.tela_listagem import TelaListagemCategoria
+from interface.categorias.tela_cadastro import TelaCadastroCategoria
+from interface.categorias.tela_listagem import TelaListagemCategoria
 from interface.produtos.tela_cadastro import TelaCadastroProduto
 from interface.produtos.tela_listagem import TelaListagemProduto
 

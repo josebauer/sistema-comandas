@@ -1,6 +1,16 @@
 from data.db_connection import get_connection
 from classes.categoria import Categoria
 
+def excluir_categoria_db(id: int):
+  conn = get_connection()
+  cursor = conn.cursor()
+  try:
+    cursor.execute("DELETE FROM categoria WHERE id = %s", (id,))
+    conn.commit()
+  finally:
+    cursor.close()
+    conn.close()
+    
 def listar_categorias() -> list[Categoria]:
   conn = get_connection()
   cursor = conn.cursor(dictionary=True) 
