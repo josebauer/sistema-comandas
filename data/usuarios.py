@@ -98,7 +98,7 @@ def atualizar_usuario_db(usuario: Usuario):
     cursor.close()
     conn.close()
 
-def cadastrar_usuario_bd(usuario: Usuario):
+def cadastrar_usuario_db(usuario: Usuario):
   conn = get_connection()
   cursor = conn.cursor()
 

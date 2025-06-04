@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from classes.categoria import Categoria 
-from data.categorias import cadastrar_categoria_bd
+from data.categorias import cadastrar_categoria_db
 
 class TelaCadastroCategoria(ctk.CTkFrame):
     def __init__(self, master, trocar_tela_callback, usuario_logado=None):
@@ -64,7 +64,7 @@ class TelaCadastroCategoria(ctk.CTkFrame):
 
         try:
             categoria = Categoria(nome)
-            cadastrar_categoria_bd(categoria)
+            cadastrar_categoria_db(categoria)
             messagebox.showinfo("Sucesso", "Categoria cadastrada com sucesso!")
             self.voltar()
         except Exception as e:

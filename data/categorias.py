@@ -30,7 +30,7 @@ def listar_categorias() -> list[Categoria]:
     cursor.close()
     conn.close()
 
-def cadastrar_categoria_bd(categoria: Categoria):
+def cadastrar_categoria_db(categoria: Categoria):
   conn = get_connection()
   cursor = conn.cursor()
 

@@ -71,7 +71,7 @@ def listar_produtos() -> list[Produto]:
     cursor.close()
     conn.close()
 
-def cadastrar_produto_bd(produto: Produto):
+def cadastrar_produto_db(produto: Produto):
 
   conn = get_connection()
   cursor = conn.cursor()

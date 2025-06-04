@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from classes.usuario import Usuario
-from data.usuarios import cadastrar_usuario_bd
+from data.usuarios import cadastrar_usuario_db
 
 class TelaCadastro(ctk.CTkFrame):
   def __init__(self, master, trocar_tela_callback, usuario=None):
@@ -91,7 +91,7 @@ class TelaCadastro(ctk.CTkFrame):
     novo_usuario = Usuario(nome, cpf, email, senha, funcao)
 
     try:
-      cadastrar_usuario_bd(novo_usuario)
+      cadastrar_usuario_db(novo_usuario)
       messagebox.showinfo("Sucesso", "Usuário cadastrado com sucesso!")
       self.voltar()
     except Exception as e:

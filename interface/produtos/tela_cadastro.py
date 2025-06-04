@@ -1,7 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from classes.produto import Produto
-from data.produtos import cadastrar_produto_bd
+from data.produtos import cadastrar_produto_db
 from data.categorias import listar_categorias
 
 class TelaCadastroProduto(ctk.CTkFrame):
@@ -110,7 +110,7 @@ class TelaCadastroProduto(ctk.CTkFrame):
         )
 
         try:
-            cadastrar_produto_bd(produto)
+            cadastrar_produto_db(produto)
             messagebox.showinfo("Sucesso", "Produto cadastrado com sucesso!")
             self.limpar_campos()
         except Exception as e:
