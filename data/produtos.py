@@ -71,6 +71,29 @@ def listar_produtos() -> list[Produto]:
     cursor.close()
     conn.close()
 
+def listar_produtos_disponiveis() -> list[Produto]:
+  conn = get_connection()
+  cursor = conn.cursor(dictionary=True) 
+
+  try:
+    cursor.execute("SELECT * FROM produto WHERE disponibilidade = 'Disponível'")
+    produtos_data = cursor.fetchall()
+
+    return [
+      Produto(
+        id=d["id"],
+        nome=d["nome"],
+        valor=d["valor"],
+        id_categoria=d["id_categoria"],
+        descricao=d["descricao"],
+        disponibilidade=d["disponibilidade"]
+      ) for d in produtos_data
+    ]
+
+  finally:
+    cursor.close()
+    conn.close()
+
 def cadastrar_produto_db(produto: Produto):
 
   conn = get_connection()

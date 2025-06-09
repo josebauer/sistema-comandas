@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from interface.usuarios.tela_principal import TelaPrincipalUsuarios
 from interface.produtos.tela_principal import TelaPrincipalProdutos 
+from interface.pedidos.tela_principal import TelaPrincipalPedidos
 
 class TelaGerenciamento(ctk.CTkFrame):
   def __init__(self, master, trocar_tela_callback, usuario):
@@ -77,8 +78,7 @@ class TelaGerenciamento(ctk.CTkFrame):
     self.trocar_tela_callback(TelaPrincipalProdutos, self.usuario)
     pass
   def abrir_tela_pedidos(self):
-      # Quando tiver a tela de pedidos, siga o mesmo padrão:
-      # self.trocar_tela_callback(TelaPedidos, self.usuario)
+    self.trocar_tela_callback(TelaPrincipalPedidos, self.usuario)
     pass
 
   def voltar_login(self):

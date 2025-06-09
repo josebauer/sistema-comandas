@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from data.usuarios import login_usuario
 from interface.tela_gerenciamento import TelaGerenciamento
+from interface.pedidos.tela_principal import TelaPrincipalPedidos
 
 class TelaLogin(ctk.CTkFrame):
   def __init__(self, master, trocar_tela):
@@ -48,6 +49,6 @@ class TelaLogin(ctk.CTkFrame):
       if usuario.funcao == "Administrador":
         self.trocar_tela(TelaGerenciamento, usuario)
       else:
-        messagebox.showinfo("Login", f"Bem-vindo, {usuario.nome}!")
+        self.trocar_tela(TelaPrincipalPedidos, usuario)
     else:
       messagebox.showwarning("Erro", "Email ou senha incorretos.")
