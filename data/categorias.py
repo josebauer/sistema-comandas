@@ -30,6 +30,23 @@ def listar_categorias() -> list[Categoria]:
     cursor.close()
     conn.close()
 
+def consultar_categoria_db(id: int) -> Categoria | None:
+  conn = get_connection()
+  cursor = conn.cursor(dictionary=True)
+
+  try:
+    cursor.execute("SELECT * FROM categoria WHERE id = %s", (id,))
+    dados = cursor.fetchone()
+    if dados:
+      return Categoria(
+        id=dados["id"],
+        nome=dados["nome"]
+      )
+    return None
+  finally:
+    cursor.close()
+    conn.close()
+
 def cadastrar_categoria_db(categoria: Categoria):
   conn = get_connection()
   cursor = conn.cursor()
