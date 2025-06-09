@@ -4,6 +4,7 @@ from data.produtos import listar_produtos_disponiveis
 from data.pedidos import cadastrar_pedido
 from classes.pedido import Pedido
 from classes.item_pedido import ItemPedido
+from interface.widgets.item_pedido import ItemPedidoWidget
 
 class TelaCadastroPedido(ctk.CTkFrame):
   def __init__(self, master, trocar_tela_callback, usuario_logado):
@@ -35,8 +36,8 @@ class TelaCadastroPedido(ctk.CTkFrame):
     ctk.CTkButton(self.frame, text="Adicionar Item", command=self.adicionar_item).pack(pady=(5, 15))
 
     # Lista de itens do pedido
-    self.lista_itens = ctk.CTkTextbox(self.frame, height=150, width=400, state="disabled")
-    self.lista_itens.pack(pady=5)
+    self.scroll_frame_itens = ctk.CTkScrollableFrame(self.frame, width=400, height=200)
+    self.scroll_frame_itens.pack(pady=5)
 
     # Botões de ação
     botoes_frame = ctk.CTkFrame(self.frame)
@@ -87,12 +88,33 @@ class TelaCadastroPedido(ctk.CTkFrame):
     self.input_quantidade.delete(0, "end")
     self.input_observacao.delete(0, "end")
 
+  def editar_item(self, item):
+    nova_qtd = ctk.CTkInputDialog(title="Editar Quantidade", text="Nova quantidade:").get_input()
+    try:
+        nova_qtd = int(nova_qtd)
+        if nova_qtd <= 0:
+            raise ValueError
+        item._quantidade = nova_qtd
+        self.atualizar_lista_itens()
+    except:
+        messagebox.showwarning("Erro", "Quantidade inválida.")
+
+  def excluir_item(self, item):
+    self.itens_pedido.remove(item)
+    self.atualizar_lista_itens()
+    
   def atualizar_lista_itens(self):
-    self.lista_itens.configure(state="normal")
-    self.lista_itens.delete("1.0", "end")
+    for widget in self.scroll_frame_itens.winfo_children():
+        widget.destroy()
+
     for item in self.itens_pedido:
-      self.lista_itens.insert("end", f"{item._quantidade}x {item._nome} - R${item._valor_unit:.2f}\n")
-    self.lista_itens.configure(state="disabled")
+      widget = ItemPedidoWidget(
+        self.scroll_frame_itens,
+        item_pedido=item,
+        editar_callback=self.editar_item,
+        excluir_callback=self.excluir_item
+      )
+      widget.pack(fill="x", padx=5, pady=2)
 
   def finalizar_pedido(self):
     if not self.itens_pedido:
@@ -103,7 +125,7 @@ class TelaCadastroPedido(ctk.CTkFrame):
     pedido = Pedido(valor_total=valor_total, status="Pendente")
 
     try:
-      cadastrar_pedido(pedido, self.itens_pedido)
+      cadastrar_pedido(self, pedido)
       messagebox.showinfo("Sucesso", "Pedido cadastrado com sucesso.")
       self.itens_pedido.clear()
       self.atualizar_lista_itens()
