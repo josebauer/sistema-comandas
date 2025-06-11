@@ -3,7 +3,7 @@ from interface.tela_login import TelaLogin
 from interface.tela_gerenciamento import TelaGerenciamento
 from classes.usuario import Usuario
 
-DEBUG = True
+DEBUG = False
 class App(ctk.CTk):
   def __init__(self):
     super().__init__()

@@ -7,18 +7,18 @@ def cadastrar_pedido(pedido: Pedido):
 
   try:
     cursor.execute(
-      "INSERT INTO pedido (valor_total, status) VALUES (%s, %s)",
-      (pedido._valor_total, pedido._status)
+      "INSERT INTO pedido (status, valor_total, id_metodo_pag, id_usuario) VALUES (%s, %s, %s, %s)",
+      (pedido._status, pedido._valor_total, pedido._id_metodo_pag, pedido._id_usuario)
     )
     pedido_id = cursor.lastrowid
   
     for item in pedido.itens:
       cursor.execute(
         """
-        INSERT INTO item_pedido (pedido_id, nome, observacoes, valor_unit, quantidade)
+        INSERT INTO item_pedido (nome, obs, valor_unit, qtde, id_produto)
         VALUES (%s, %s, %s, %s, %s)
         """,
-        (pedido_id, item._nome, item._observacoes, item._valor_unit, item._quantidade)
+        (pedido_id, item._nome, item._observacoes, item._valor_unit, item._quantidade, item._id_produto)
       )
 
     conn.commit()

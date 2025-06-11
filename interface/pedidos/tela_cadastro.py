@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from data.produtos import listar_produtos_disponiveis
+from data.meteodos_pag import listar_met_pag
 from data.pedidos import cadastrar_pedido
 from classes.pedido import Pedido
 from classes.item_pedido import ItemPedido
@@ -38,6 +39,14 @@ class TelaCadastroPedido(ctk.CTkFrame):
     # Lista de itens do pedido
     self.scroll_frame_itens = ctk.CTkScrollableFrame(self.frame, width=400, height=200)
     self.scroll_frame_itens.pack(pady=5)
+    
+    # Lista de métodos de pagamento
+    self.metodos_pag = listar_met_pag()
+    self.metodos_pag_dict = {f"{m.nome}": m for m in self.metodos_pag}
+    self.combo_met_pag = ctk.CTkOptionMenu(self.frame, values=list(self.metodos_pag_dict.keys()), width=400)
+    if self.metodos_pag:
+      self.combo_met_pag.set("Selecione o método de pagamento")
+    self.combo_met_pag.pack(pady=5)
 
     # Botões de ação
     botoes_frame = ctk.CTkFrame(self.frame)
@@ -78,7 +87,9 @@ class TelaCadastroPedido(ctk.CTkFrame):
       nome=produto.nome,
       observacoes=observacao,
       valor_unit=produto.valor,
-      quantidade=quantidade
+      quantidade=quantidade,
+      id_pedido=None,            
+      id_produto=produto.id
     )
     self.itens_pedido.append(item)
 
@@ -91,11 +102,11 @@ class TelaCadastroPedido(ctk.CTkFrame):
   def editar_item(self, item):
     nova_qtd = ctk.CTkInputDialog(title="Editar Quantidade", text="Nova quantidade:").get_input()
     try:
-        nova_qtd = int(nova_qtd)
-        if nova_qtd <= 0:
-            raise ValueError
-        item._quantidade = nova_qtd
-        self.atualizar_lista_itens()
+      nova_qtd = int(nova_qtd)
+      if nova_qtd <= 0:
+        raise ValueError
+      item._quantidade = nova_qtd
+      self.atualizar_lista_itens()
     except:
         messagebox.showwarning("Erro", "Quantidade inválida.")
 
@@ -117,15 +128,29 @@ class TelaCadastroPedido(ctk.CTkFrame):
       widget.pack(fill="x", padx=5, pady=2)
 
   def finalizar_pedido(self):
+    metodo_pag = self.combo_met_pag.get()
+    
     if not self.itens_pedido:
       messagebox.showwarning("Erro", "Adicione ao menos um item ao pedido.")
       return
 
+    metodo_pag_nome = self.combo_met_pag.get()
+    metodo_pag = self.metodos_pag_dict.get(metodo_pag_nome)
+    if not metodo_pag:
+      messagebox.showwarning("Erro", "Selecione um método de pagamento válido.")
+      return
+
     valor_total = sum(item._valor_unit * item._quantidade for item in self.itens_pedido)
-    pedido = Pedido(valor_total=valor_total, status="Pendente")
+    pedido = Pedido(
+      valor_total=valor_total,
+      status="Pendente",
+      id_metodo_pag=metodo_pag.id,
+      id_usuario=self.usuario_logado.id,
+      itens=self.itens_pedido
+    )
 
     try:
-      cadastrar_pedido(self, pedido)
+      cadastrar_pedido(pedido)
       messagebox.showinfo("Sucesso", "Pedido cadastrado com sucesso.")
       self.itens_pedido.clear()
       self.atualizar_lista_itens()

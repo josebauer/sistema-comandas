@@ -55,14 +55,14 @@ def criar_tabelas():
   
   cursor.execute("""
     CREATE TABLE IF NOT EXISTS item_pedido (
-      id INT AUTO_INCREMENT PRIMARY KEY,
       nome VARCHAR(50) NOT NULL,
       obs VARCHAR(100) NOT NULL,
       valor_unit FLOAT NOT NULL,
       qtde INT NOT NULL,
       id_pedido INT NOT NULL,
       id_produto INT NOT NULL,
-      FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+      PRIMARY KEY (id_pedido, id_produto),
+      FOREIGN KEY (id_pedido) REFERENCES pedido(id),
       FOREIGN KEY (id_produto) REFERENCES produto(id)
     );
   """)
