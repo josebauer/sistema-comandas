@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import messagebox
+from data.categorias import listar_categorias
 from data.produtos import atualizar_produto_db
 
 class TelaEdicaoProduto(ctk.CTkFrame):
@@ -12,7 +13,11 @@ class TelaEdicaoProduto(ctk.CTkFrame):
         self.frame = ctk.CTkFrame(self, fg_color="transparent")
         self.frame.pack(expand=True)
 
-        titulo = ctk.CTkLabel(self.frame, text="Editar dados do produto", font=ctk.CTkFont(size=18, weight="bold"))
+        titulo = ctk.CTkLabel(
+            self.frame,
+            text="Editar dados do produto",
+            font=ctk.CTkFont(size=18, weight="bold")
+        )
         titulo.pack(pady=(0, 20))
 
         self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", height=40, width=400)
@@ -21,8 +26,20 @@ class TelaEdicaoProduto(ctk.CTkFrame):
         self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
         self.input_valor.pack(pady=5, fill="x")
 
-        self.input_categoria = ctk.CTkEntry(self.frame, placeholder_text="ID da Categoria", height=40, width=400)
-        self.input_categoria.pack(pady=5, fill="x")
+        # Carregar categorias
+        self.categorias = listar_categorias()
+        self.categorias_dict = {cat.nome: cat.id for cat in self.categorias}
+
+        self.combo_categoria = ctk.CTkOptionMenu(
+            self.frame,
+            values=list(self.categorias_dict.keys()),
+            fg_color="#366bac",
+            button_color="#204066",
+            button_hover_color="#366bac",
+            height=40,
+            width=400
+        )
+        self.combo_categoria.pack(pady=5, fill="x")
 
         self.input_descricao = ctk.CTkEntry(self.frame, placeholder_text="Descrição", height=40, width=400)
         self.input_descricao.pack(pady=5, fill="x")
@@ -72,26 +89,40 @@ class TelaEdicaoProduto(ctk.CTkFrame):
     def preencher_campos(self):
         self.input_nome.insert(0, self.produto_encontrado.nome)
         self.input_valor.insert(0, str(self.produto_encontrado.valor))
-        self.input_categoria.insert(0, str(self.produto_encontrado.id_categoria))
+
+        nome_categoria = next(
+            (nome for nome, id_ in self.categorias_dict.items() if id_ == self.produto_encontrado.id_categoria),
+            None
+        )
+        if nome_categoria:
+            self.combo_categoria.set(nome_categoria)
+
         self.input_descricao.insert(0, self.produto_encontrado.descricao or "")
         self.combo_disponibilidade.set(self.produto_encontrado.disponibilidade)
 
     def salvar_edicao(self):
         nome = self.input_nome.get().strip()
         valor = self.input_valor.get().strip()
-        id_categoria = self.input_categoria.get().strip()
+        nome_categoria = self.combo_categoria.get().strip()
         descricao = self.input_descricao.get().strip()
         disponibilidade = self.combo_disponibilidade.get()
 
-        if not nome or not valor or not id_categoria:
-            messagebox.showwarning("Erro", "Preencha todos os campos obrigatórios.")
+        if not nome or not valor or not nome_categoria or not descricao:
+            messagebox.showwarning("Erro", "Preencha todos os campos.")
             return
 
         try:
             valor = float(valor.replace(',', '.'))
-            id_categoria = int(id_categoria)
+            if valor < 0.50:
+                messagebox.showwarning("Erro", "O valor não pode ser menor ou igual a zero.")
+                return
         except ValueError:
-            messagebox.showwarning("Erro", "Valor deve ser numérico e categoria deve ser um número inteiro.")
+            messagebox.showwarning("Erro", "O valor deve ser um número válido.")
+            return
+
+        id_categoria = self.categorias_dict.get(nome_categoria)
+        if id_categoria is None:
+            messagebox.showerror("Erro", "Categoria inválida.")
             return
 
         self.produto_encontrado.nome = nome

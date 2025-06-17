@@ -89,13 +89,16 @@ class TelaCadastroProduto(ctk.CTkFrame):
         descricao = self.input_descricao.get().strip()
         disponibilidade = self.combo_disponibilidade.get()
 
-        if not nome or not valor or not categoria_nome:
+        if not nome or not valor or not categoria_nome or not descricao:
             messagebox.showwarning("Erro", "Preencha todos os campos obrigatórios.")
             return
 
         try:
             valor = float(valor.replace(',', '.'))
             id_categoria = self.categorias_dict.get(categoria_nome)
+            if valor < 0.50:
+                messagebox.showwarning("Erro", "O valor não pode ser menor ou igual a zero.")
+                return
         except ValueError:
             messagebox.showwarning("Erro", "Valor deve ser numérico.")
             return

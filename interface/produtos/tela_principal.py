@@ -1,4 +1,6 @@
 import customtkinter as ctk
+from tkinter import messagebox
+from data.categorias import listar_categorias
 from interface.categorias.tela_cadastro import TelaCadastroCategoria
 from interface.categorias.tela_listagem import TelaListagemCategoria
 from interface.produtos.tela_cadastro import TelaCadastroProduto
@@ -102,7 +104,15 @@ class TelaPrincipalProdutos(ctk.CTkFrame):
 
   #--- Função para mostrar a tela de cadastro do produto
   def mostrar_tela_cadastro(self):
-    self.trocar_tela_callback(TelaCadastroProduto, self.usuario)
+    self.categorias = listar_categorias()
+    
+    if self.categorias:
+      self.trocar_tela_callback(TelaCadastroProduto, self.usuario)
+    else:
+      messagebox.showwarning("Atenção", "Primeiramente cadastre uma categoria.")
+      self.trocar_tela_callback(TelaCadastroCategoria, self.usuario)
+      return
+
 
   #--- Função para mostrar a tela de listagem dos produtos cadastrados
   def mostrar_tela_listar(self):
