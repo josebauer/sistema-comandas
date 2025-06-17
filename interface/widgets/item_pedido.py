@@ -1,6 +1,7 @@
 import os
 from PIL import Image
 import customtkinter as ctk
+from utils.caminhos import caminho_recurso
 
 class ItemPedidoWidget(ctk.CTkFrame):
   def __init__(self, master, item_pedido, editar_callback, excluir_callback, **kwargs):
@@ -17,8 +18,7 @@ class ItemPedidoWidget(ctk.CTkFrame):
     )
     label_nome.pack(side="left", padx=10, pady=10, expand=True)
 
-    base_path = os.path.dirname(__file__)
-    icons_path = os.path.join(base_path, "..", "icons")
+    icons_path = caminho_recurso("interface/icons")
 
     icone_editar = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "pencil.png")), size=(24, 24))
     icone_excluir = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "trash.png")), size=(24, 24))
