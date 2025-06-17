@@ -27,25 +27,13 @@ Desenvolvido para o Projeto Integrador, do curso Jovem Programador do SENAC-SC. 
   pip install -r requirements.txt
 ```
 
-4. Crie o banco de dados com o código a seguir:
+4. Configure o Banco de Dados pelo código abaixo:
 
 ```bash
-  python data/create_database.py
+  python setup_db.py
 ```
 
-5. Crie as tabelas do banco de dados com o código a seguir:
-
-```bash
-  python data/create_tables.py
-```
-
-6. Crie o usuário administrador para acessar o sistema, com o código a seguir:
-
-```bash
-  python data/create_user_admin.py
-```
-
-7. Rode o programa pelo arquivo main ou pelo seguinte código:
+5. Rode o programa pelo seguinte código:
 
 ```bash
   python main.py

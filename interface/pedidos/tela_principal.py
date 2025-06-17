@@ -1,7 +1,6 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from interface.pedidos.tela_cadastro import TelaCadastroPedido
-from interface.produtos.tela_cadastro import TelaCadastroProduto
 from data.produtos import listar_produtos
 
 class TelaPrincipalPedidos(ctk.CTkFrame):
@@ -70,8 +69,8 @@ class TelaPrincipalPedidos(ctk.CTkFrame):
       self.trocar_tela_callback(TelaCadastroPedido, self.usuario)
     else:
       messagebox.showwarning("Atenção", "Ainda não há produtos cadastrados.")
-      self.trocar_tela_callback(TelaCadastroProduto, self.usuario)
-      return
+      from interface.produtos.tela_principal import TelaPrincipalProdutos
+      self.trocar_tela_callback(TelaPrincipalProdutos, self.usuario)
     
     
   #--- Função para mostrar a tela de listagem dos produtos cadastrados

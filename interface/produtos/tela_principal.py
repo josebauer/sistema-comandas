@@ -111,7 +111,6 @@ class TelaPrincipalProdutos(ctk.CTkFrame):
     else:
       messagebox.showwarning("Atenção", "Primeiramente cadastre uma categoria.")
       self.trocar_tela_callback(TelaCadastroCategoria, self.usuario)
-      return
 
 
   #--- Função para mostrar a tela de listagem dos produtos cadastrados
