@@ -23,18 +23,35 @@ class TelaCadastroPedido(ctk.CTkFrame):
     self.produtos_disponiveis = listar_produtos_disponiveis()
     self.produtos_dict = {f"{p.nome} - R${p.valor:.2f}": p for p in self.produtos_disponiveis}
 
-    self.combo_produto = ctk.CTkOptionMenu(self.frame, values=list(self.produtos_dict.keys()), width=400)
+    self.combo_produto = ctk.CTkOptionMenu(
+      self.frame, 
+      values=list(self.produtos_dict.keys()),
+      fg_color="#366bac",
+      button_color="#204066",  
+      button_hover_color="#366bac",
+      height=40,
+      width=400
+    )
     if self.produtos_disponiveis:
       self.combo_produto.set("Selecione um produto")
     self.combo_produto.pack(pady=5)
 
-    self.input_quantidade = ctk.CTkEntry(self.frame, placeholder_text="Quantidade", width=400)
+    self.input_quantidade = ctk.CTkEntry(self.frame, placeholder_text="Quantidade", height=40, width=400)
     self.input_quantidade.pack(pady=5)
 
-    self.input_observacao = ctk.CTkEntry(self.frame, placeholder_text="Observações (opcional)", width=400)
+    self.input_observacao = ctk.CTkEntry(self.frame, placeholder_text="Observações (opcional)", height=40, width=400)
     self.input_observacao.pack(pady=5)
 
-    ctk.CTkButton(self.frame, text="Adicionar Item", command=self.adicionar_item).pack(pady=(5, 15))
+    ctk.CTkButton(
+      self.frame, text="Adicionar Item", 
+      command=self.adicionar_item,    
+      height=40,   
+      fg_color="transparent", 
+      font=ctk.CTkFont(size=14, weight="bold"),
+      border_width=2,
+      border_color="#238636", 
+      hover_color="#238636"
+    ).pack(pady=(5, 15))
 
     # Lista de itens do pedido
     self.scroll_frame_itens = ctk.CTkScrollableFrame(self.frame, width=400, height=200)
@@ -43,7 +60,16 @@ class TelaCadastroPedido(ctk.CTkFrame):
     # Lista de métodos de pagamento
     self.metodos_pag = listar_met_pag()
     self.metodos_pag_dict = {f"{m.nome}": m for m in self.metodos_pag}
-    self.combo_met_pag = ctk.CTkOptionMenu(self.frame, values=list(self.metodos_pag_dict.keys()), width=400)
+    self.combo_met_pag = ctk.CTkOptionMenu(
+      self.frame, 
+      values=list(self.metodos_pag_dict.keys()), 
+      fg_color="#366bac",
+      button_color="#204066",  
+      button_hover_color="#366bac",
+      height=40,
+      width=400
+    )
+    
     if self.metodos_pag:
       self.combo_met_pag.set("Selecione o método de pagamento")
     self.combo_met_pag.pack(pady=5)
@@ -55,14 +81,18 @@ class TelaCadastroPedido(ctk.CTkFrame):
     ctk.CTkButton(
       botoes_frame, text="Finalizar Pedido",
       command=self.finalizar_pedido,
+      height=40,
       fg_color="transparent", border_width=2,
+      font=ctk.CTkFont(size=14, weight="bold"),
       border_color="#238636", hover_color="#238636"
     ).pack(side="left", expand=True, fill="x", padx=(0, 5))
 
     ctk.CTkButton(
       botoes_frame, text="Voltar",
       command=self.voltar,
+      height=40,
       fg_color="transparent", border_width=2,
+      font=ctk.CTkFont(size=14, weight="bold"),
       border_color="#63a9ff", hover_color="#63a9ff"
     ).pack(side="left", expand=True, fill="x", padx=(5, 0))
 
@@ -143,7 +173,7 @@ class TelaCadastroPedido(ctk.CTkFrame):
     valor_total = sum(item._valor_unit * item._quantidade for item in self.itens_pedido)
     pedido = Pedido(
       valor_total=valor_total,
-      status="Pendente",
+      status="Em preparo",
       id_metodo_pag=metodo_pag.id,
       id_usuario=self.usuario_logado.id,
       itens=self.itens_pedido

@@ -13,7 +13,7 @@ class ItemUsuario(ctk.CTkFrame):
     label_nome = ctk.CTkLabel(self, text=usuario.nome, font=ctk.CTkFont(size=14, weight="bold"))
     label_nome.pack(side="left", padx=(10, 0), pady=10, expand=True)
  
-    icons_path = caminho_recurso("/interface/icons")
+    icons_path = caminho_recurso("interface/icons")
         
     self.icone_editar = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "pencil.png")), size=(24, 24))
     self.icone_excluir = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "trash.png")), size=(24, 24))

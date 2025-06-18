@@ -15,10 +15,10 @@ def cadastrar_pedido(pedido: Pedido):
     for item in pedido.itens:
       cursor.execute(
         """
-        INSERT INTO item_pedido (nome, obs, valor_unit, qtde, id_produto)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO item_pedido (nome, obs, valor_unit, qtde, id_pedido, id_produto)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """,
-        (pedido_id, item._nome, item._observacoes, item._valor_unit, item._quantidade, item._id_produto)
+        (item._nome, item._observacoes, item._valor_unit, item._quantidade, pedido_id, item._id_produto)
       )
 
     conn.commit()
@@ -30,7 +30,7 @@ def cadastrar_pedido(pedido: Pedido):
     return None
 
   finally:
-      cursor.close()
-      conn.close()
-  
+    cursor.close()
+    conn.close()
+
   

@@ -9,22 +9,10 @@ class App(ctk.CTk):
     super().__init__()
     self.title("Sistema de Comandas")
     self.geometry("800x600")
-    self.resizable(False, False)
     
     self.tela_atual = None
     
-    if DEBUG:
-      # Usuário de teste para simular um login
-      usuario_teste = Usuario(
-        nome="Administrador",
-        cpf="000.000.000-00",
-        email="admin@teste.com",
-        senha="1234",
-        funcao="Administrador"
-      )
-      self.trocar_tela(TelaGerenciamento, usuario_teste)
-    else:
-        self.trocar_tela(TelaLogin)
+    self.trocar_tela(TelaLogin)
 
   def trocar_tela(self, TelaClasse, *args):
     if self.tela_atual:

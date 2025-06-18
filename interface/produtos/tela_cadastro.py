@@ -45,7 +45,7 @@ class TelaCadastroProduto(ctk.CTkFrame):
             self.frame,
             values=["Disponível", "Indisponível"],
             fg_color="#366bac",
-            button_color="#204066",
+            button_color="#204066",  
             button_hover_color="#366bac",
             height=40,
             width=400
