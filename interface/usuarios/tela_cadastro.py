@@ -1,3 +1,4 @@
+import re
 import customtkinter as ctk
 from tkinter import messagebox
 from classes.usuario import Usuario
@@ -26,7 +27,13 @@ class TelaCadastro(ctk.CTkFrame):
     )
     self.input_nome.pack(pady=5, padx=10)
 
-    self.input_cpf = ctk.CTkEntry(self.frame, placeholder_text="CPF (Apenas números)", height=40, width=400)
+    self.input_cpf = ctk.CTkEntry(
+      self.frame, 
+      placeholder_text="CPF (Apenas números)", 
+      height=40, 
+      width=400, 
+    )
+    
     self.input_cpf.pack(pady=5, padx=10)
     self.input_cpf.bind("<KeyRelease>", self.formatar_cpf)
 
@@ -84,6 +91,15 @@ class TelaCadastro(ctk.CTkFrame):
       messagebox.showwarning("Erro", "Preencha todos os campos.")
       return
     
+    cpf_numeros = ''.join(filter(str.isdigit, cpf))
+    if len(cpf_numeros) != 11:
+      messagebox.showwarning("Erro", "O CPF deve conter exatamente 11 números.")
+      return
+    
+    if not self.validar_email(email):
+      messagebox.showwarning("Erro", "Digite um e-mail válido.")
+      return
+    
     if senha != repetir_senha:
       messagebox.showwarning("Erro", "As senhas não conferem")
       return
@@ -103,6 +119,10 @@ class TelaCadastro(ctk.CTkFrame):
 
   def validar_nome(self, texto):
     return all(c.isalpha() or c.isspace() for c in texto)
+  
+  def validar_email(self, email):
+    padrao = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(padrao, email) is not None
   
   def formatar_cpf(self, event=None):
     texto = self.input_cpf.get()

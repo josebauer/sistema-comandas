@@ -1,3 +1,4 @@
+import re
 import customtkinter as ctk
 from tkinter import messagebox
 from data.usuarios import atualizar_usuario_db
@@ -78,6 +79,10 @@ class TelaEdicao(ctk.CTkFrame):
   
   def validar_nome(self, texto):
     return all(c.isalpha() or c.isspace() for c in texto)
+  
+  def validar_email(self, email):
+    padrao = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(padrao, email) is not None
 
   def preencher_campos(self):
     self.input_nome.insert(0, self.usuario_encontrado.nome)
@@ -99,6 +104,10 @@ class TelaEdicao(ctk.CTkFrame):
 
     if not nome or not email or not senha or not repetir_senha:
       messagebox.showwarning("Erro", "Preencha todos os campos.")
+      return
+    
+    if not self.validar_email(email):
+      messagebox.showwarning("Erro", "Digite um e-mail válido.")
       return
     
     if senha != repetir_senha:
