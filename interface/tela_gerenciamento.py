@@ -1,7 +1,8 @@
 import customtkinter as ctk
+from interface.pedidos.tela_cadastro import TelaCadastroPedido
 from interface.usuarios.tela_principal import TelaPrincipalUsuarios
 from interface.produtos.tela_principal import TelaPrincipalProdutos 
-from interface.pedidos.tela_principal import TelaPrincipalPedidos
+from interface.pedidos.tela_listagem import TelaListagemPedidos
 
 class TelaGerenciamento(ctk.CTkFrame):
   def __init__(self, master, trocar_tela_callback, usuario):
@@ -15,7 +16,31 @@ class TelaGerenciamento(ctk.CTkFrame):
 
     label = ctk.CTkLabel(layout, text=f"Bem-vindo, {usuario.nome}!", font=ctk.CTkFont(size=18, weight="bold"))
     label.pack(pady=(0, 20))
-
+    
+    botao_realizar_pedido = ctk.CTkButton(
+      layout, 
+      text="Realizar novo pedido", 
+      command=self.abrir_tela_novo_pedido, 
+      height=45, 
+      width=400, 
+      fg_color="transparent",
+      border_width=2,
+      border_color="#63a9ff",
+      hover_color="#63a9ff",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
+    botao_lista_pedidos = ctk.CTkButton(
+      layout, 
+      text="Pedidos Realizados", 
+      command=self.abrir_tela_pedidos, 
+      height=45, 
+      width=400, 
+      fg_color="transparent",
+      border_width=2,
+      border_color="#63a9ff",
+      hover_color="#63a9ff",
+      font=ctk.CTkFont(size=14, weight="bold")
+    )
     botao_geren_usuarios = ctk.CTkButton(
       layout, 
       text="Gerenciar usuários", 
@@ -40,18 +65,7 @@ class TelaGerenciamento(ctk.CTkFrame):
       hover_color="#238636",
       font=ctk.CTkFont(size=14, weight="bold")
     )
-    botao_geren_pedidos = ctk.CTkButton(
-      layout, 
-      text="Gerenciar pedidos", 
-      command=self.abrir_tela_pedidos, 
-      height=45, 
-      width=400, 
-      fg_color="transparent",
-      border_width=2,
-      border_color="#238636",
-      hover_color="#238636",
-      font=ctk.CTkFont(size=14, weight="bold")
-    )
+    
     botao_sair = ctk.CTkButton(
       layout, 
       text="Sair", 
@@ -65,11 +79,15 @@ class TelaGerenciamento(ctk.CTkFrame):
       font=ctk.CTkFont(size=14, weight="bold"),  
     )
 
+    botao_realizar_pedido.pack(pady=10)
+    botao_lista_pedidos.pack(pady=10)
     botao_geren_usuarios.pack(pady=10)
 
     botao_geren_produtos.pack(pady=10)
-    botao_geren_pedidos.pack(pady=10)
     botao_sair.pack(pady=10)
+  
+  def abrir_tela_novo_pedido(self):
+    self.trocar_tela_callback(TelaCadastroPedido, self.usuario)
 
   def abrir_tela_usuarios(self):
     self.trocar_tela_callback(TelaPrincipalUsuarios, self.usuario)
@@ -78,7 +96,7 @@ class TelaGerenciamento(ctk.CTkFrame):
     self.trocar_tela_callback(TelaPrincipalProdutos, self.usuario)
     pass
   def abrir_tela_pedidos(self):
-    self.trocar_tela_callback(TelaPrincipalPedidos, self.usuario)
+    self.trocar_tela_callback(TelaListagemPedidos, self.usuario)
     pass
 
   def voltar_login(self):

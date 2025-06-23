@@ -188,5 +188,9 @@ class TelaCadastroPedido(ctk.CTkFrame):
       messagebox.showerror("Erro", f"Erro ao cadastrar pedido: {e}")
 
   def voltar(self):
-    from interface.pedidos.tela_principal import TelaPrincipalPedidos
-    self.trocar_tela_callback(TelaPrincipalPedidos, self.usuario_logado)
+    if self.usuario_logado.funcao == 'Administrador':
+      from interface.tela_gerenciamento import TelaGerenciamento
+      self.trocar_tela_callback(TelaGerenciamento, self.usuario_logado)
+    else:
+      from interface.tela_atendente import TelaAtendente
+      self.trocar_tela_callback(TelaAtendente, self.usuario_logado)
