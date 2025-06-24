@@ -41,17 +41,20 @@ class TelaCadastroPedido(ctk.CTkFrame):
 
     self.input_observacao = ctk.CTkEntry(self.frame, placeholder_text="Observações (opcional)", height=40, width=400)
     self.input_observacao.pack(pady=5)
+    
+    self.item_em_edicao = None
 
-    ctk.CTkButton(
-      self.frame, text="Adicionar Item", 
-      command=self.adicionar_item,    
-      height=40,   
-      fg_color="transparent", 
-      font=ctk.CTkFont(size=14, weight="bold"),
-      border_width=2,
-      border_color="#238636", 
-      hover_color="#238636"
-    ).pack(pady=(5, 15))
+    self.botao_adicionar = ctk.CTkButton(
+        self.frame, text="Adicionar Item",
+        command=self.adicionar_item,
+        height=40,
+        fg_color="transparent",
+        font=ctk.CTkFont(size=14, weight="bold"),
+        border_width=2,
+        border_color="#238636",
+        hover_color="#238636"
+    )
+    self.botao_adicionar.pack(pady=(5, 15))
 
     # Lista de itens do pedido
     self.scroll_frame_itens = ctk.CTkScrollableFrame(self.frame, width=400, height=200)
@@ -105,6 +108,7 @@ class TelaCadastroPedido(ctk.CTkFrame):
     if not produto or produto_nome == "Selecione um produto":
       messagebox.showwarning("Erro", "Selecione um produto válido.")
       return
+
     try:
       quantidade = int(quantidade)
       if quantidade <= 0:
@@ -113,32 +117,53 @@ class TelaCadastroPedido(ctk.CTkFrame):
       messagebox.showwarning("Erro", "Quantidade inválida.")
       return
 
-    item = ItemPedido(
-      nome=produto.nome,
-      observacoes=observacao,
-      valor_unit=produto.valor,
-      quantidade=quantidade,
-      id_pedido=None,            
-      id_produto=produto.id
-    )
-    self.itens_pedido.append(item)
+    if self.item_em_edicao:
+        # Está editando um item
+      self.item_em_edicao._nome = produto.nome
+      self.item_em_edicao._valor_unit = produto.valor
+      self.item_em_edicao._id_produto = produto.id
+      self.item_em_edicao._quantidade = quantidade
+      self.item_em_edicao._observacoes = observacao
+
+      self.item_em_edicao = None
+      self.botao_adicionar.configure(text="Adicionar Item")
+    else:
+      # Adicionando novo item
+      item = ItemPedido(
+        nome=produto.nome,
+        observacoes=observacao,
+        valor_unit=produto.valor,
+        quantidade=quantidade,
+        id_pedido=None,
+        id_produto=produto.id
+      )
+      self.itens_pedido.append(item)
 
     self.atualizar_lista_itens()
 
     # Limpar campos
+    self.combo_produto.set("Selecione um produto")
     self.input_quantidade.delete(0, "end")
     self.input_observacao.delete(0, "end")
 
   def editar_item(self, item):
-    nova_qtd = ctk.CTkInputDialog(title="Editar Quantidade", text="Nova quantidade:").get_input()
-    try:
-      nova_qtd = int(nova_qtd)
-      if nova_qtd <= 0:
-        raise ValueError
-      item._quantidade = nova_qtd
-      self.atualizar_lista_itens()
-    except:
-        messagebox.showwarning("Erro", "Quantidade inválida.")
+    self.item_em_edicao = item
+
+    # Preencher os inputs com os dados do item
+    produto_nome = next(
+        (nome for nome, prod in self.produtos_dict.items() if prod.id == item._id_produto),
+        None
+    )
+    if produto_nome:
+        self.combo_produto.set(produto_nome)
+
+    self.input_quantidade.delete(0, "end")
+    self.input_quantidade.insert(0, str(item._quantidade))
+
+    self.input_observacao.delete(0, "end")
+    self.input_observacao.insert(0, item._observacoes or "")
+
+    self.botao_adicionar.configure(text="Salvar Alteração")
 
   def excluir_item(self, item):
     self.itens_pedido.remove(item)

@@ -1,0 +1,2 @@
+class TelaConsultaPedido:
+  pass
