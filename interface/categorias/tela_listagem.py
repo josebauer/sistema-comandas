@@ -54,7 +54,7 @@ class TelaListagemCategoria(ctk.CTkFrame):
         self.trocar_tela_callback(TelaConsultaCategoria, self.usuario_logado, categoria.id)
 
     def editar_categoria(self, categoria):
-        self.trocar_tela_callback(TelaEdicaoCategoria, categoria)
+        self.trocar_tela_callback(TelaEdicaoCategoria, self.usuario_logado, categoria)
 
     def excluir_categoria(self, categoria):
         excluir_categoria_db(categoria.id)

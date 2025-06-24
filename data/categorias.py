@@ -47,6 +47,22 @@ def consultar_categoria_db(id: int) -> Categoria | None:
     cursor.close()
     conn.close()
 
+def atualizar_categoria_db(categoria: Categoria):
+  conn = get_connection()
+  cursor = conn.cursor()
+  
+  try:
+    cursor.execute("""
+      UPDATE categoria
+      SET nome = %s
+      WHERE id = %s
+    """, (categoria.nome, categoria.id))
+
+    conn.commit()
+  finally:
+    cursor.close()
+    conn.close()
+
 def cadastrar_categoria_db(categoria: Categoria):
   conn = get_connection()
   cursor = conn.cursor()
