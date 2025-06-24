@@ -15,8 +15,10 @@ class TelaCadastroProduto(ctk.CTkFrame):
 
         titulo = ctk.CTkLabel(self.frame, text="Cadastro de Produto", font=ctk.CTkFont(size=18, weight="bold"))
         titulo.pack(pady=(0, 20))
+        
+        validar_cmd = self.register(self.validar_nome)
 
-        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", height=40, width=400)
+        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", validate="key", validatecommand=(validar_cmd, "%P"), height=40, width=400)
         self.input_nome.pack(pady=5, padx=10)
 
         self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
@@ -119,6 +121,8 @@ class TelaCadastroProduto(ctk.CTkFrame):
         except Exception as e:
             messagebox.showerror("Erro", f"Erro ao cadastrar produto: {e}")
 
+    def validar_nome(self, texto):
+        return all(c.isalpha() or c.isspace() for c in texto)
 
     def voltar(self):
         from interface.produtos.tela_principal import TelaPrincipalProdutos

@@ -20,7 +20,9 @@ class TelaEdicaoProduto(ctk.CTkFrame):
         )
         titulo.pack(pady=(0, 20))
 
-        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", height=40, width=400)
+        validar_cmd = self.register(self.validar_nome)
+        
+        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto",       validate="key", validatecommand=(validar_cmd, "%P"), height=40, width=400)
         self.input_nome.pack(pady=5, fill="x")
 
         self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
@@ -85,6 +87,9 @@ class TelaEdicaoProduto(ctk.CTkFrame):
         self.botao_voltar.pack(side="left", expand=True, fill="x", padx=(5, 0))
 
         self.preencher_campos()
+    
+    def validar_nome(self, texto):
+        return all(c.isalpha() or c.isspace() for c in texto)
 
     def preencher_campos(self):
         self.input_nome.insert(0, self.produto_encontrado.nome)
