@@ -40,9 +40,9 @@ def atualizar_status_pedido(pedido: Pedido):
   try:
     cursor.execute("""
       UPDATE pedido
-      SET status = %s, 
+      SET status = %s
       WHERE id = %s
-    """, (pedido.nome, pedido.id))
+    """, (pedido._status, pedido._id))
 
     conn.commit()
   finally:
