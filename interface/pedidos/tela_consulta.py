@@ -22,25 +22,50 @@ class TelaConsultaPedido(ctk.CTkFrame):
     self.cartao.pack(padx=10, pady=10, fill="both", expand=False)
 
     self.label_id = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_id.pack(pady=5, padx=20, anchor="w")
+    self.label_id.pack(pady=(30, 0), padx=30, anchor="w")
+
+    self.label_usuario = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=16), anchor="w")
+    self.label_usuario.pack(pady=(10, 0), padx=30, anchor="w")
+    
+    self.label_status = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w", wraplength=360, justify="left")
+    self.label_status.pack(pady=5, padx=30, anchor="w")
+
+    self.divisor = ctk.CTkFrame(self.cartao, height=1, fg_color="#444444")
+    self.divisor.pack(fill="x", pady=10, padx=10)
+    
+    self.label_itens_pedido = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
+    self.label_itens_pedido.pack(pady=5, padx=30, anchor="w")
+    
+    self.label_itens = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
+    self.label_itens.pack(pady=5, padx=30, anchor="w")
     
     self.label_valor_total = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_valor_total.pack(pady=5, padx=20, anchor="w")
-
-    self.label_status = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w", wraplength=360, justify="left")
-    self.label_status.pack(pady=5, padx=20, anchor="w")
-
-    self.label_itens = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_itens.pack(pady=5, padx=20, anchor="w")
+    self.label_valor_total.pack(pady=5, padx=30, anchor="w")
+    
+    self.divisor = ctk.CTkFrame(self.cartao, height=1, fg_color="#444444")
+    self.divisor.pack(fill="x", pady=10, padx=10)
 
     self.label_metodo_pag = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_metodo_pag.pack(pady=(5, 30), padx=20, anchor="w")
+    self.label_metodo_pag.pack(pady=(0, 30), padx=20, anchor="w")
     
-    self.label_usuario = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_usuario.pack(pady=(5, 30), padx=20, anchor="w")
+    botoes_frame = ctk.CTkFrame(container)
+    botoes_frame.pack(pady=(15, 0), padx=10, fill="x")
+    
+    self.botao_recibo = ctk.CTkButton(
+      botoes_frame,
+      text="Emitir recibo",
+      fg_color="transparent",
+      border_width=2,
+      border_color="#238636",
+      hover_color="#238636",
+      font=ctk.CTkFont(size=14, weight="bold"),
+      command=self.emitir_recibo,
+      height=40
+    )
+    self.botao_recibo.pack(side="left", expand=True, fill="x", padx=(0, 5))
 
     self.botao_voltar = ctk.CTkButton(
-        container,
+        botoes_frame,
         text="Voltar",
         fg_color="transparent",
         border_width=2,
@@ -48,27 +73,28 @@ class TelaConsultaPedido(ctk.CTkFrame):
         hover_color="#63a9ff",
         font=ctk.CTkFont(size=14, weight="bold"),
         command=self.voltar,
-        height=40,
-        width=400
+        height=40
     )
-    self.botao_voltar.pack(pady=(30, 0))
+    self.botao_voltar.pack(side="left", expand=True, fill="x", padx=(5, 0))
 
     self.mostrar_pedido(pedido_id_para_ver)
 
   def mostrar_pedido(self, pedido_id):
       pedido = consultar_pedido(pedido_id)
       if pedido:   
-        self.label_id.configure(text=f"Pedido n°: {pedido._id}")
-        self.label_valor_total.configure(text=f"Valor:   R$ {pedido._valor_total:.2f}")
+        self.label_id.configure(text=f"Pedido n°:   {pedido._id}")
+        self.label_usuario.configure(text=f"Atendente responsável: {pedido.nome_usuario}")
         self.label_status.configure(text=f"Status:   {pedido._status}")
         
         itens_texto = ""
         for item in pedido.itens:
-          itens_texto += f"- {item._nome} (Qtd: {item._quantidade}, R${item._valor_unit:.2f})\n"
-        self.label_itens.configure(text=f"Itens Pedido:\n{itens_texto}")
+          itens_texto += f"- {item._quantidade}x {item._nome} R${item._valor_unit:.2f}\n"
+        self.label_itens_pedido.configure(text=f"Itens do pedido:")
+        self.label_itens.configure(text=f"\n{itens_texto}")
             
+        self.label_valor_total.configure(text=f"Valor Total:   R$ {pedido._valor_total:.2f}")
+        
         self.label_metodo_pag.configure(text=f"Método de pagamento:   {pedido.nome_metodo_pagamento}")
-        self.label_usuario.configure(text=f"Atendente responsável: {pedido.nome_usuario}")
       else:
           messagebox.showinfo("Não encontrado", "pedido não encontrado.")
           self.label_id.configure(text="")
@@ -77,7 +103,11 @@ class TelaConsultaPedido(ctk.CTkFrame):
           self.label_itens.configure(text="")
           self.label_metodo_pag.configure(text="")
           self.label_usuario.configure(text="")
-
+    
+  def emitir_recibo(self):
+    messagebox.showinfo("Recibo", "Emitindo recibo...")
+    
+    
   def voltar(self):
       from interface.pedidos.tela_listagem import TelaListagemPedidos
       self.trocar_tela_callback(TelaListagemPedidos, self.usuario_logado)
