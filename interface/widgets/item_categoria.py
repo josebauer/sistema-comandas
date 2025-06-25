@@ -21,19 +21,8 @@ class ItemCategoria(ctk.CTkFrame):
 
     self.icone_editar = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "pencil.png")), size=(24, 24))
     self.icone_excluir = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "trash.png")), size=(24, 24))
-    self.icone_ver = ctk.CTkImage(light_image=Image.open(os.path.join(icons_path, "view.png")), size=(24, 24))
 
     # Botões de ação
-    ctk.CTkButton(
-      self,
-      image=self.icone_ver,
-      text="",
-      width=40,
-      fg_color="transparent",
-      hover_color="#204066",
-      command=lambda: ver_callback(categoria)
-    ).pack(side="right", padx=5)
-
     ctk.CTkButton(
       self,
       image=self.icone_editar,

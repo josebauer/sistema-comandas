@@ -56,7 +56,7 @@ class TelaListagemPedidos(ctk.CTkFrame):
           item.pack(padx=5, pady=5, fill="x")
 
   def ver_pedido(self, pedido):
-      self.trocar_tela_callback(TelaConsultaPedido, self.usuario_logado, pedido.id)
+      self.trocar_tela_callback(TelaConsultaPedido, self.usuario_logado, pedido._id)
 
   def editar_status_pedido(self, pedido):
       self.trocar_tela_callback(TelaEdicaoPedido, self.usuario_logado, pedido)

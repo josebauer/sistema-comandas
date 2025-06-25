@@ -54,7 +54,13 @@ def consultar_pedido(id: int) -> Pedido | None:
   cursor = conn.cursor(dictionary=True)
 
   try:
-    cursor.execute("SELECT * FROM pedido WHERE id = %s", (id,))
+    cursor.execute("""
+      SELECT p.*, u.nome AS nome_usuario, m.nome AS nome_met_pag
+      FROM pedido p
+      JOIN usuario u ON p.id_usuario = u.id
+      JOIN metodo_pag m ON p.id_metodo_pag = m.id
+      WHERE p.id = %s
+    """, (id,))
     dados = cursor.fetchone()
 
     cursor.execute("""
@@ -64,27 +70,27 @@ def consultar_pedido(id: int) -> Pedido | None:
     """, (id,))
     itens_data = cursor.fetchall()
 
-    # Criar objetos ItemPedido
     itens = [
-        ItemPedido(
-            nome=item["nome"],
-            observacoes=item["obs"],
-            valor_unit=item["valor_unit"],
-            quantidade=item["qtde"],
-            id_pedido=id,
-            id_produto=item["id_produto"]
-        )
-        for item in itens_data
+      ItemPedido(
+          nome=item["nome"],
+          observacoes=item["obs"],
+          valor_unit=item["valor_unit"],
+          quantidade=item["qtde"],
+          id_pedido=id,
+          id_produto=item["id_produto"]
+      )
+      for item in itens_data
     ]
 
-    # Retornar o objeto Pedido com os itens
     return Pedido(
         id=dados["id"],
         valor_total=dados["valor_total"],
         status=dados["status"],
         id_metodo_pag=dados["id_metodo_pag"],
         id_usuario=dados["id_usuario"],
-        itens=itens
+        itens=itens,
+        nome_usuario=dados["nome_usuario"],
+        nome_metodo_pagamento=dados["nome_met_pag"]
     )
 
   except Exception as e:
