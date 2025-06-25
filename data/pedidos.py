@@ -34,10 +34,70 @@ def cadastrar_pedido(pedido: Pedido):
     cursor.close()
     conn.close()
 
+def atualizar_status_pedido(pedido: Pedido):
+  conn = get_connection()
+  cursor = conn.cursor()
+  try:
+    cursor.execute("""
+      UPDATE pedido
+      SET status = %s, 
+      WHERE id = %s
+    """, (pedido.nome, pedido.id))
+
+    conn.commit()
+  finally:
+    cursor.close()
+    conn.close()
+
+def consultar_pedido(id: int) -> Pedido | None:
+  conn = get_connection()
+  cursor = conn.cursor(dictionary=True)
+
+  try:
+    cursor.execute("SELECT * FROM pedido WHERE id = %s", (id,))
+    dados = cursor.fetchone()
+
+    cursor.execute("""
+      SELECT nome, obs, valor_unit, qtde, id_produto
+      FROM item_pedido
+      WHERE id_pedido = %s
+    """, (id,))
+    itens_data = cursor.fetchall()
+
+    # Criar objetos ItemPedido
+    itens = [
+        ItemPedido(
+            nome=item["nome"],
+            observacoes=item["obs"],
+            valor_unit=item["valor_unit"],
+            quantidade=item["qtde"],
+            id_pedido=id,
+            id_produto=item["id_produto"]
+        )
+        for item in itens_data
+    ]
+
+    # Retornar o objeto Pedido com os itens
+    return Pedido(
+        id=dados["id"],
+        valor_total=dados["valor_total"],
+        status=dados["status"],
+        id_metodo_pag=dados["id_metodo_pag"],
+        id_usuario=dados["id_usuario"],
+        itens=itens
+    )
+
+  except Exception as e:
+    print(f"Erro ao consultar pedido: {e}")
+    return None
+
+  finally:
+    cursor.close()
+    conn.close()
+
 def listar_pedidos():
   conn = get_connection()
   cursor = conn.cursor()
-
   
   try:
     cursor.execute("""
