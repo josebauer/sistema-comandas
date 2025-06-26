@@ -5,11 +5,11 @@ from classes.item_pedido import ItemPedido
 def cadastrar_pedido(pedido: Pedido):
   conn = get_connection()
   cursor = conn.cursor()
-
+  
   try:
     cursor.execute(
-      "INSERT INTO pedido (status, valor_total, id_metodo_pag, id_usuario) VALUES (%s, %s, %s, %s)",
-      (pedido._status, pedido._valor_total, pedido._id_metodo_pag, pedido._id_usuario)
+      "INSERT INTO pedido (data_hora, status, valor_total, id_metodo_pag, id_usuario) VALUES (%s, %s, %s, %s, %s)",
+      (pedido._data_hora, pedido._status, pedido._valor_total, pedido._id_metodo_pag, pedido._id_usuario)
     )
     pedido_id = cursor.lastrowid
   
@@ -84,6 +84,7 @@ def consultar_pedido(id: int) -> Pedido | None:
 
     return Pedido(
         id=dados["id"],
+        data_hora=dados["data_hora"],
         valor_total=dados["valor_total"],
         status=dados["status"],
         id_metodo_pag=dados["id_metodo_pag"],
@@ -107,7 +108,7 @@ def listar_pedidos():
   
   try:
     cursor.execute("""
-      SELECT p.id, p.status, p.valor_total, p.id_metodo_pag, p.id_usuario
+      SELECT p.id, p.data_hora, p.status, p.valor_total, p.id_metodo_pag, p.id_usuario
       FROM pedido p
     """)
     pedidos_data = cursor.fetchall()
@@ -136,10 +137,11 @@ def listar_pedidos():
 
       pedido = Pedido(
         id=pedido_id,
-        status=pd[1],
-        valor_total=pd[2],
-        id_metodo_pag=pd[3],
-        id_usuario=pd[4],
+        data_hora=pd[1],
+        status=pd[2],
+        valor_total=pd[3],
+        id_metodo_pag=pd[4],
+        id_usuario=pd[5],
         itens=itens
       )
       pedidos.append(pedido)

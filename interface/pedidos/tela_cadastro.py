@@ -6,6 +6,7 @@ from data.pedidos import cadastrar_pedido
 from classes.pedido import Pedido
 from classes.item_pedido import ItemPedido
 from interface.widgets.item_pedido import ItemPedidoWidget
+from datetime import datetime
 
 class TelaCadastroPedido(ctk.CTkFrame):
   def __init__(self, master, trocar_tela_callback, usuario_logado):
@@ -129,16 +130,22 @@ class TelaCadastroPedido(ctk.CTkFrame):
       self.botao_adicionar.configure(text="Adicionar Item")
     else:
       # Adicionando novo item
-      item = ItemPedido(
-        nome=produto.nome,
-        observacoes=observacao,
-        valor_unit=produto.valor,
-        quantidade=quantidade,
-        id_pedido=None,
-        id_produto=produto.id
-      )
-      self.itens_pedido.append(item)
+      item_existente = next((i for i in self.itens_pedido if i._id_produto == produto.id), None)
 
+      if item_existente:
+        item_existente._quantidade += quantidade
+        item_existente._observacoes = observacao or item_existente._observacoes
+        messagebox.showinfo("Atualizado", "O item já estava no pedido. A quantidade foi atualizada.")
+      else:
+        item = ItemPedido(
+          nome=produto.nome,
+          observacoes=observacao,
+          valor_unit=produto.valor,
+          quantidade=quantidade,
+          id_pedido=None,
+          id_produto=produto.id
+        )
+        self.itens_pedido.append(item)
     self.atualizar_lista_itens()
 
     # Limpar campos
@@ -183,6 +190,9 @@ class TelaCadastroPedido(ctk.CTkFrame):
       widget.pack(fill="x", padx=5, pady=2)
 
   def finalizar_pedido(self):
+    
+    data_hora = datetime.now()
+      
     metodo_pag = self.combo_met_pag.get()
     
     if not self.itens_pedido:
@@ -197,6 +207,7 @@ class TelaCadastroPedido(ctk.CTkFrame):
 
     valor_total = sum(item._valor_unit * item._quantidade for item in self.itens_pedido)
     pedido = Pedido(
+      data_hora=data_hora,
       valor_total=valor_total,
       status="Em preparo",
       id_metodo_pag=metodo_pag.id,
@@ -209,6 +220,7 @@ class TelaCadastroPedido(ctk.CTkFrame):
       messagebox.showinfo("Sucesso", "Pedido cadastrado com sucesso.")
       self.itens_pedido.clear()
       self.atualizar_lista_itens()
+      self.combo_met_pag.set("Selecione o método de pagamento")
     except Exception as e:
       messagebox.showerror("Erro", f"Erro ao cadastrar pedido: {e}")
 

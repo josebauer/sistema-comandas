@@ -44,6 +44,7 @@ def criar_tabelas():
   cursor.execute("""
     CREATE TABLE IF NOT EXISTS pedido (
       id INT AUTO_INCREMENT PRIMARY KEY,
+      data_hora DATETIME NOT NULL,
       status VARCHAR(30) NOT NULL,
       valor_total FLOAT NOT NULL,
       id_metodo_pag INT NOT NULL,
