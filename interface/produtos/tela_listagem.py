@@ -10,15 +10,18 @@ class TelaListagemProduto(ctk.CTkFrame):
         self.trocar_tela_callback = trocar_tela_callback
         self.usuario_logado = usuario_logado
 
-        ctk.CTkLabel(self, text="Produtos Cadastrados", font=ctk.CTkFont(size=18, weight="bold")).pack(pady=(40, 0))
+        self.frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.frame.pack(expand=True)
+      
+        ctk.CTkLabel(self.frame, text="Produtos Cadastrados", font=ctk.CTkFont(size=18, weight="bold")).pack(pady=(0, 20))
 
-        self.container = ctk.CTkScrollableFrame(self, width=550, height=350)
+        self.container = ctk.CTkScrollableFrame(self.frame, width=500, height=500)
         self.container.pack(expand=True)
 
         self.carregar_produtos()
 
         self.botao_voltar = ctk.CTkButton(
-            self,
+            self.frame,
             text="Voltar",
             fg_color="transparent",
             border_width=2,

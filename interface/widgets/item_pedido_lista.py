@@ -37,5 +37,6 @@ class ItemPedidoLista(ctk.CTkFrame):
         self, text=item_text,
         font=ctk.CTkFont(size=12)
       ).pack(side="top", anchor="w", padx=30, pady=(0, 5))
-    
+
     label_valor_total = ctk.CTkLabel(self, text=f"Total: R${valor_total_formatado}", font=ctk.CTkFont(size=12, weight="bold"))
+    label_valor_total.pack(padx=50, pady=(0, 10), anchor="e")

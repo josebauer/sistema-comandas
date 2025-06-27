@@ -14,7 +14,8 @@ class TelaListagemPedidos(ctk.CTkFrame):
       self.frame.pack(expand=True)
 
       ctk.CTkLabel(
-          self.frame, text="Pedidos Realizados",
+          self.frame, text="Pedidos Realizados", 
+          
           font=ctk.CTkFont(size=18, weight="bold")
       ).pack(pady=(0, 20))
 

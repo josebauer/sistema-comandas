@@ -9,16 +9,19 @@ class TelaListagemCategoria(ctk.CTkFrame):
         super().__init__(master)
         self.trocar_tela_callback = trocar_tela_callback
         self.usuario_logado = usuario_logado
+        
+        self.frame = ctk.CTkFrame(self, fg_color="transparent")
+        self.frame.pack(expand=True)
 
-        ctk.CTkLabel(self, text="Categorias Cadastradas", font=ctk.CTkFont(size=18, weight="bold")).pack(pady=(40, 0))
+        ctk.CTkLabel(self.frame, text="Categorias Cadastradas", font=ctk.CTkFont(size=18, weight="bold")).pack(pady=(0, 20))
 
-        self.container = ctk.CTkScrollableFrame(self, width=550, height=350)
+        self.container = ctk.CTkScrollableFrame(self.frame, width=500, height=500)
         self.container.pack(expand=True)
 
         self.carregar_categorias()
 
         self.botao_voltar = ctk.CTkButton(
-            self,
+            self.frame,
             text="Voltar",
             fg_color="transparent",
             border_width=2,
