@@ -9,10 +9,15 @@ class ItemPedidoLista(ctk.CTkFrame):
     self.pedido = pedido
 
     self.configure(fg_color="#366bac", corner_radius=10)
+    
+    data_formatada = pedido._data_hora.strftime("%d/%m/%Y às %H:%M")
 
-    texto = f"Pedido nº: {pedido._id} | Status: {pedido._status} | Total: R${pedido._valor_total:.2f}"
+    texto = f"Pedido nº: {pedido._id} - {pedido._status}"
     label = ctk.CTkLabel(self, text=texto, font=ctk.CTkFont(size=14, weight="bold"))
-    label.pack(side="top", anchor="w", padx=10, pady=(5, 0))
+    label.pack(side="top", anchor="w", padx=30, pady=(10, 0))
+    
+    label_data_hora = ctk.CTkLabel(self, text=f"Realizado em: {data_formatada}", font=ctk.CTkFont(size=12, weight="bold"))
+    label_data_hora.pack(side="top", anchor="w", padx=30)
     
     icons_path = caminho_recurso("interface/icons")
 
@@ -28,5 +33,6 @@ class ItemPedidoLista(ctk.CTkFrame):
       ctk.CTkLabel(
         self, text=item_text,
         font=ctk.CTkFont(size=12)
-      ).pack(side="top", anchor="w", padx=15, pady=(0, 5))
+      ).pack(side="top", anchor="w", padx=30, pady=(0, 5))
     
+    label_valor_total = ctk.CTkLabel(self, text=f"Total: R${pedido._valor_total:.2f}", font=ctk.CTkFont(size=12, weight="bold"))

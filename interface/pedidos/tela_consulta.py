@@ -17,13 +17,20 @@ class TelaConsultaPedido(ctk.CTkFrame):
         font=ctk.CTkFont(size=24, weight="bold")
     )
     titulo.pack(pady=(0, 30))
+    
+    cartao_container = ctk.CTkFrame(container, fg_color="transparent", width=500, height=400)
+    cartao_container.pack(pady=10)
+    cartao_container.pack_propagate(False)
 
-    self.cartao = ctk.CTkFrame(container, fg_color="#1e1e1e", corner_radius=12, width=400)
-    self.cartao.pack(padx=10, pady=10, fill="both", expand=False)
+    self.cartao = ctk.CTkFrame(cartao_container, fg_color="#1e1e1e", corner_radius=12)
+    self.cartao.pack(fill="both", expand=True, padx=20) 
 
     self.label_id = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
     self.label_id.pack(pady=(30, 0), padx=30, anchor="w")
-
+    
+    self.label_data_hora = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=16), anchor="w")
+    self.label_data_hora.pack(pady=(10, 0), padx=30, anchor="w")
+    
     self.label_usuario = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=16), anchor="w")
     self.label_usuario.pack(pady=(10, 0), padx=30, anchor="w")
     
@@ -46,7 +53,7 @@ class TelaConsultaPedido(ctk.CTkFrame):
     self.divisor.pack(fill="x", pady=10, padx=10)
 
     self.label_metodo_pag = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_metodo_pag.pack(pady=(0, 30), padx=20, anchor="w")
+    self.label_metodo_pag.pack(pady=(0, 30), padx=30, anchor="w")
     
     botoes_frame = ctk.CTkFrame(container)
     botoes_frame.pack(pady=(15, 0), padx=10, fill="x")
@@ -81,9 +88,12 @@ class TelaConsultaPedido(ctk.CTkFrame):
 
   def mostrar_pedido(self, pedido_id):
       pedido = consultar_pedido(pedido_id)
+      data_formatada = pedido._data_hora.strftime("Data: %d/%m/%Y    Hora: %H:%M")
+      
       if pedido:   
         self.label_id.configure(text=f"Pedido n°:   {pedido._id}")
-        self.label_usuario.configure(text=f"Atendente responsável: {pedido.nome_usuario}")
+        self.label_data_hora.configure(text=f"{data_formatada}")
+        self.label_usuario.configure(text=f"Atendente: {pedido.nome_usuario}")
         self.label_status.configure(text=f"Status:   {pedido._status}")
         
         itens_texto = ""

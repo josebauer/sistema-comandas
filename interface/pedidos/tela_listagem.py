@@ -18,7 +18,7 @@ class TelaListagemPedidos(ctk.CTkFrame):
           font=ctk.CTkFont(size=18, weight="bold")
       ).pack(pady=(0, 20))
 
-      self.scroll_frame = ctk.CTkScrollableFrame(self.frame, width=600, height=400)
+      self.scroll_frame = ctk.CTkScrollableFrame(self.frame, width=600, height=600)
       self.scroll_frame.pack()
 
       botoes_frame = ctk.CTkFrame(self.frame)
