@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import customtkinter as ctk
 from utils.caminhos import caminho_recurso
+from utils.formatacao import formatar_moeda
 
 class ItemPedidoWidget(ctk.CTkFrame):
   def __init__(self, master, item_pedido, editar_callback, excluir_callback, **kwargs):
@@ -9,10 +10,11 @@ class ItemPedidoWidget(ctk.CTkFrame):
     self.item_pedido = item_pedido
 
     self.configure(fg_color="#3b3b3b", corner_radius=10)
+    valor_unit_formatado = formatar_moeda(item_pedido._valor_unit)
 
     label_nome = ctk.CTkLabel(
       self,
-      text=f"{item_pedido._quantidade}x {item_pedido._nome} - R$ {item_pedido._valor_unit:.2f}",
+      text=f"{item_pedido._quantidade}x {item_pedido._nome} - R$ {valor_unit_formatado}",
       font=ctk.CTkFont(size=14, weight="bold"),
       anchor="w"
     )

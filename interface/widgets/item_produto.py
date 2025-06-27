@@ -2,6 +2,7 @@ import os
 from PIL import Image
 import customtkinter as ctk
 from utils.caminhos import caminho_recurso
+from utils.formatacao import formatar_moeda
 
 class ItemProduto(ctk.CTkFrame):
     def __init__(self, master, produto, ver_callback, editar_callback, excluir_callback, **kwargs):
@@ -9,10 +10,12 @@ class ItemProduto(ctk.CTkFrame):
         self.produto = produto
 
         self.configure(fg_color="#366bac", corner_radius=10)
+        
+        valor_formatado = formatar_moeda(produto.valor)
 
         label_nome = ctk.CTkLabel(
             self,
-            text=f"{produto.nome} - R$ {produto.valor:.2f}",
+            text=f"{produto.nome} - R$ {valor_formatado}",
             font=ctk.CTkFont(size=14, weight="bold")
         )
         label_nome.pack(side="left", padx=(10, 0), pady=10, expand=True)

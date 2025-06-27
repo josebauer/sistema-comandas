@@ -22,11 +22,17 @@ class TelaEdicaoProduto(ctk.CTkFrame):
 
         validar_cmd = self.register(self.validar_nome)
         
-        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto",       validate="key", validatecommand=(validar_cmd, "%P"), height=40, width=400)
+        self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", validate="key", validatecommand=(validar_cmd, "%P"), height=40, width=400)
         self.input_nome.pack(pady=5, fill="x")
 
-        self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
+        self.input_valor = ctk.CTkEntry(
+            self.frame, 
+            placeholder_text="Valor (Apenas números)", 
+            height=40, 
+            width=400
+        )
         self.input_valor.pack(pady=5, fill="x")
+        self.input_valor.bind("<KeyRelease>", self.formatar_valor_dinamicamente)
 
         # Carregar categorias
         self.categorias = listar_categorias()
@@ -88,6 +94,20 @@ class TelaEdicaoProduto(ctk.CTkFrame):
 
         self.preencher_campos()
     
+    def formatar_valor_dinamicamente(self, event=None):
+        texto = self.input_valor.get()
+        numeros = ''.join(filter(str.isdigit, texto))
+
+        if not numeros:
+            self.input_valor.delete(0, "end")
+            return
+
+        valor_float = int(numeros) / 100
+        valor_formatado = f"{valor_float:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        
+        self.input_valor.delete(0, "end")
+        self.input_valor.insert(0, valor_formatado)
+        
     def validar_nome(self, texto):
         return all(c.isalpha() or c.isspace() for c in texto)
 

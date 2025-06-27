@@ -2,6 +2,7 @@ import customtkinter as ctk
 import os
 from PIL import Image
 from utils.caminhos import caminho_recurso
+from utils.formatacao import formatar_moeda
 
 class ItemPedidoLista(ctk.CTkFrame):
   def __init__(self, master, pedido, ver_callback, editar_callback, **kwargs):
@@ -11,6 +12,7 @@ class ItemPedidoLista(ctk.CTkFrame):
     self.configure(fg_color="#366bac", corner_radius=10)
     
     data_formatada = pedido._data_hora.strftime("%d/%m/%Y às %H:%M")
+    valor_total_formatado = formatar_moeda(pedido._valor_total)
 
     texto = f"Pedido nº: {pedido._id} - {pedido._status}"
     label = ctk.CTkLabel(self, text=texto, font=ctk.CTkFont(size=14, weight="bold"))
@@ -29,10 +31,11 @@ class ItemPedidoLista(ctk.CTkFrame):
     ctk.CTkButton(self, image=self.icone_editar, text="", width=40, fg_color="transparent", hover_color="#204066", command=lambda: editar_callback(pedido)).pack(side="right", padx=5)
     
     for item in pedido.itens:
-      item_text = f"   - {item._nome} | Qtd: {item._quantidade} | Valor Unit.: R${item._valor_unit:.2f}"
+      valor_unit_formatado = formatar_moeda(item._valor_unit)
+      item_text = f"   - {item._nome} | Qtd: {item._quantidade} | Valor Unit.: R$ {valor_unit_formatado}"
       ctk.CTkLabel(
         self, text=item_text,
         font=ctk.CTkFont(size=12)
       ).pack(side="top", anchor="w", padx=30, pady=(0, 5))
     
-    label_valor_total = ctk.CTkLabel(self, text=f"Total: R${pedido._valor_total:.2f}", font=ctk.CTkFont(size=12, weight="bold"))
+    label_valor_total = ctk.CTkLabel(self, text=f"Total: R${valor_total_formatado}", font=ctk.CTkFont(size=12, weight="bold"))

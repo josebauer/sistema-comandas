@@ -1,6 +1,7 @@
 import customtkinter as ctk
 from tkinter import messagebox
 from data.pedidos import consultar_pedido
+from utils.formatacao import formatar_moeda
 
 class TelaConsultaPedido(ctk.CTkFrame):
   def __init__(self, master, trocar_tela_callback, usuario_logado, pedido_id_para_ver):
@@ -18,7 +19,7 @@ class TelaConsultaPedido(ctk.CTkFrame):
     )
     titulo.pack(pady=(0, 30))
     
-    cartao_container = ctk.CTkFrame(container, fg_color="transparent", width=500, height=400)
+    cartao_container = ctk.CTkFrame(container, fg_color="transparent", width=500, height=600)
     cartao_container.pack(pady=10)
     cartao_container.pack_propagate(False)
 
@@ -98,11 +99,14 @@ class TelaConsultaPedido(ctk.CTkFrame):
         
         itens_texto = ""
         for item in pedido.itens:
-          itens_texto += f"- {item._quantidade}x {item._nome} R${item._valor_unit:.2f}\n"
+          valor_valor_unit_formatado = formatar_moeda(item._valor_unit)
+          itens_texto += f"- {item._quantidade}x {item._nome} R$ {valor_valor_unit_formatado}\n"
         self.label_itens_pedido.configure(text=f"Itens do pedido:")
         self.label_itens.configure(text=f"\n{itens_texto}")
-            
-        self.label_valor_total.configure(text=f"Valor Total:   R$ {pedido._valor_total:.2f}")
+        
+        valor_valor_total_formatado = formatar_moeda(pedido._valor_total)
+        
+        self.label_valor_total.configure(text=f"Valor Total:   R$ {valor_valor_total_formatado}")
         
         self.label_metodo_pag.configure(text=f"Método de pagamento:   {pedido.nome_metodo_pagamento}")
       else:

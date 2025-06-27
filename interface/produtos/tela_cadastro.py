@@ -21,8 +21,14 @@ class TelaCadastroProduto(ctk.CTkFrame):
         self.input_nome = ctk.CTkEntry(self.frame, placeholder_text="Nome do Produto", validate="key", validatecommand=(validar_cmd, "%P"), height=40, width=400)
         self.input_nome.pack(pady=5, padx=10)
 
-        self.input_valor = ctk.CTkEntry(self.frame, placeholder_text="Valor (ex: 49.90)", height=40, width=400)
+        self.input_valor = ctk.CTkEntry(
+            self.frame, 
+            placeholder_text="Valor (Apenas números)", 
+            height=40, 
+            width=400
+        )
         self.input_valor.pack(pady=5, padx=10)
+        self.input_valor.bind("<KeyRelease>", self.formatar_valor_dinamicamente)
         
         self.categorias = listar_categorias()
         self.categorias_dict = {cat.nome: cat.id for cat in self.categorias}
@@ -84,6 +90,20 @@ class TelaCadastroProduto(ctk.CTkFrame):
         )
         self.botao_voltar.pack(side="left", expand=True, fill="x", padx=(5, 0))
 
+    def formatar_valor_dinamicamente(self, event=None):
+        texto = self.input_valor.get()
+        numeros = ''.join(filter(str.isdigit, texto))
+
+        if not numeros:
+            self.input_valor.delete(0, "end")
+            return
+
+        valor_float = int(numeros) / 100
+        valor_formatado = f"{valor_float:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        
+        self.input_valor.delete(0, "end")
+        self.input_valor.insert(0, valor_formatado)
+    
     def cadastrar_produto(self):
         nome = self.input_nome.get().strip()
         valor = self.input_valor.get().strip()
@@ -99,7 +119,7 @@ class TelaCadastroProduto(ctk.CTkFrame):
             valor = float(valor.replace(',', '.'))
             id_categoria = self.categorias_dict.get(categoria_nome)
             if valor < 0.50:
-                messagebox.showwarning("Erro", "O valor não pode ser menor ou igual a zero.")
+                messagebox.showwarning("Erro", "O valor não pode ser menor que R$ 0,50.")
                 return
         except ValueError:
             messagebox.showwarning("Erro", "Valor deve ser numérico.")

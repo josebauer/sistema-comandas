@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from data.produtos import consultar_produto_db
 from data.categorias import consultar_categoria_db
+from utils.formatacao import formatar_moeda
 
 class TelaConsultaProduto(ctk.CTkFrame):
     def __init__(self, master, trocar_tela_callback, usuario_logado, produto_id_para_ver):
@@ -57,10 +58,11 @@ class TelaConsultaProduto(ctk.CTkFrame):
         produto = consultar_produto_db(produto_id)
         if produto:
             categoria = consultar_categoria_db(produto.id_categoria)
+            valor_formatado = formatar_moeda(produto.valor)
             nome_categoria = categoria.nome if categoria else "Categoria não encontrada"
 
             self.label_nome.configure(text=f"Nome:   {produto.nome}")
-            self.label_valor.configure(text=f"Valor:   R$ {produto.valor:.2f}")
+            self.label_valor.configure(text=f"Valor:   R$ {valor_formatado}")
             self.label_categoria.configure(text=f"Categoria:   {nome_categoria}")
             self.label_descricao.configure(text=f"Descrição:   {produto.descricao or 'Sem descrição'}")
             disponibilidade = "Disponível" if produto.disponibilidade else "Indisponível"
