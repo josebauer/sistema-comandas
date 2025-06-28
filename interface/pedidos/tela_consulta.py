@@ -23,23 +23,23 @@ class TelaConsultaPedido(ctk.CTkFrame):
     cartao_container.pack(pady=10)
     cartao_container.pack_propagate(False)
 
-    self.cartao = ctk.CTkFrame(cartao_container, fg_color="#1e1e1e", corner_radius=12)
+    self.cartao = ctk.CTkScrollableFrame(cartao_container, fg_color="#1e1e1e", corner_radius=12)
     self.cartao.pack(fill="both", expand=True, padx=20) 
 
     self.label_id = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
     self.label_id.pack(pady=(30, 0), padx=30, anchor="w")
     
-    self.label_data_hora = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=16), anchor="w")
+    self.label_data_hora = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=16, slant='italic'), anchor="w")
     self.label_data_hora.pack(pady=(10, 0), padx=30, anchor="w")
     
     self.label_usuario = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=16), anchor="w")
     self.label_usuario.pack(pady=(10, 0), padx=30, anchor="w")
     
-    self.label_status = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w", wraplength=360, justify="left")
+    self.label_status = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18, weight="bold"), anchor="w", wraplength=360, justify="left")
     self.label_status.pack(pady=5, padx=30, anchor="w")
 
-    self.divisor = ctk.CTkFrame(self.cartao, height=1, fg_color="#444444")
-    self.divisor.pack(fill="x", pady=10, padx=10)
+    self.divisor = ctk.CTkFrame(self.cartao, height=2, fg_color="#444444")
+    self.divisor.pack(fill="x", pady=10, padx=30)
     
     self.label_itens_pedido = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
     self.label_itens_pedido.pack(pady=5, padx=30, anchor="w")
@@ -47,11 +47,11 @@ class TelaConsultaPedido(ctk.CTkFrame):
     self.label_itens = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
     self.label_itens.pack(pady=5, padx=30, anchor="w")
     
-    self.label_valor_total = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
-    self.label_valor_total.pack(pady=5, padx=30, anchor="w")
+    self.label_valor_total = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18, weight="bold"), anchor="w")
+    self.label_valor_total.pack(pady=10, padx=30, anchor="w")
     
-    self.divisor = ctk.CTkFrame(self.cartao, height=1, fg_color="#444444")
-    self.divisor.pack(fill="x", pady=10, padx=10)
+    self.divisor = ctk.CTkFrame(self.cartao, height=2, fg_color="#444444")
+    self.divisor.pack(fill="x", pady=10, padx=30)
 
     self.label_metodo_pag = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
     self.label_metodo_pag.pack(pady=(0, 30), padx=30, anchor="w")
@@ -99,10 +99,13 @@ class TelaConsultaPedido(ctk.CTkFrame):
         
         itens_texto = ""
         for item in pedido.itens:
+          obs = f"\n{'Obs: ' + item._observacoes}"
+      
           valor_valor_unit_formatado = formatar_moeda(item._valor_unit)
-          itens_texto += f"- {item._quantidade}x {item._nome} R$ {valor_valor_unit_formatado}\n"
+          itens_texto += f"\n- {item._quantidade}x {item._nome} R$ {valor_valor_unit_formatado} {obs if item._observacoes else ''}\n"
+          
         self.label_itens_pedido.configure(text=f"Itens do pedido:")
-        self.label_itens.configure(text=f"\n{itens_texto}")
+        self.label_itens.configure(text=f"{itens_texto}")
         
         valor_valor_total_formatado = formatar_moeda(pedido._valor_total)
         

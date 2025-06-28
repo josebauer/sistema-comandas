@@ -2,6 +2,7 @@ import customtkinter as ctk
 from tkinter import messagebox
 from data.categorias import listar_categorias
 from data.produtos import atualizar_produto_db
+from utils.formatacao import formatar_moeda
 
 class TelaEdicaoProduto(ctk.CTkFrame):
     def __init__(self, master, trocar_tela_callback, usuario_logado, produto_encontrado):
@@ -112,8 +113,9 @@ class TelaEdicaoProduto(ctk.CTkFrame):
         return all(c.isalpha() or c.isspace() for c in texto)
 
     def preencher_campos(self):
+        valor_formatado = formatar_moeda(self.produto_encontrado.valor)
         self.input_nome.insert(0, self.produto_encontrado.nome)
-        self.input_valor.insert(0, str(self.produto_encontrado.valor))
+        self.input_valor.insert(0, str(valor_formatado))
 
         nome_categoria = next(
             (nome for nome, id_ in self.categorias_dict.items() if id_ == self.produto_encontrado.id_categoria),

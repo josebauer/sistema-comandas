@@ -217,10 +217,14 @@ class TelaCadastroPedido(ctk.CTkFrame):
 
     try:
       cadastrar_pedido(pedido)
+      pedido._id = cadastrar_pedido(pedido)
       messagebox.showinfo("Sucesso", "Pedido cadastrado com sucesso.")
       self.itens_pedido.clear()
       self.atualizar_lista_itens()
       self.combo_met_pag.set("Selecione o método de pagamento")
+      
+      from interface.pedidos.tela_consulta import TelaConsultaPedido
+      self.trocar_tela_callback(TelaConsultaPedido, self.usuario_logado, pedido._id)
     except Exception as e:
       messagebox.showerror("Erro", f"Erro ao cadastrar pedido: {e}")
 

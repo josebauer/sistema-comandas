@@ -110,6 +110,7 @@ def listar_pedidos():
     cursor.execute("""
       SELECT p.id, p.data_hora, p.status, p.valor_total, p.id_metodo_pag, p.id_usuario
       FROM pedido p
+      ORDER BY p.data_hora DESC
     """)
     pedidos_data = cursor.fetchall()
 

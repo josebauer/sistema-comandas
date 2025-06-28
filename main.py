@@ -5,7 +5,7 @@ class App(ctk.CTk):
   def __init__(self):
     super().__init__()
     self.title("Sistema de Comandas")
-    self.geometry("800x600")
+    self.geometry("1000x900")
     
     self.tela_atual = None
     
