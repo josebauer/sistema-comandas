@@ -44,7 +44,7 @@ class TelaConsultaPedido(ctk.CTkFrame):
     self.label_itens_pedido = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
     self.label_itens_pedido.pack(pady=5, padx=30, anchor="w")
     
-    self.label_itens = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18), anchor="w")
+    self.label_itens = ctk.CTkLabel(self.cartao, text="", justify="left", font=ctk.CTkFont(size=18), anchor="w")
     self.label_itens.pack(pady=5, padx=30, anchor="w")
     
     self.label_valor_total = ctk.CTkLabel(self.cartao, text="", font=ctk.CTkFont(size=18, weight="bold"), anchor="w")
