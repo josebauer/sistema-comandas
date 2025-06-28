@@ -102,6 +102,61 @@ def consultar_pedido(id: int) -> Pedido | None:
     cursor.close()
     conn.close()
 
+def listar_pedidos_por_status(status):
+  conn = get_connection()
+  cursor = conn.cursor()
+  
+  try:
+    cursor.execute("""
+      SELECT p.id, p.data_hora, p.status, p.valor_total, p.id_metodo_pag, p.id_usuario
+      FROM pedido p 
+      WHERE p.status = %s
+      ORDER BY p.data_hora DESC
+    """, (status,))
+    pedidos_data = cursor.fetchall()
+
+    pedidos = []
+    for pd in pedidos_data:
+      pedido_id = pd[0]
+      cursor.execute("""
+        SELECT nome, obs, valor_unit, qtde, id_produto
+        FROM item_pedido
+        WHERE id_pedido = %s
+      """, (pedido_id,))
+      itens_data = cursor.fetchall()
+
+      itens = [
+        ItemPedido(
+          nome=item[0],
+          observacoes=item[1],
+          valor_unit=item[2],
+          quantidade=item[3],
+          id_pedido=pedido_id,
+          id_produto=item[4]
+        )
+        for item in itens_data
+      ]
+
+      pedido = Pedido(
+        id=pedido_id,
+        data_hora=pd[1],
+        status=pd[2],
+        valor_total=pd[3],
+        id_metodo_pag=pd[4],
+        id_usuario=pd[5],
+        itens=itens
+      )
+      pedidos.append(pedido)
+
+    return pedidos
+  except Exception as e:
+      print(f"Erro ao listar pedidos: {e}")
+      return []
+
+  finally:
+      cursor.close()
+      conn.close()
+
 def listar_pedidos():
   conn = get_connection()
   cursor = conn.cursor()
